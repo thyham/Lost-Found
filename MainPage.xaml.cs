@@ -13,13 +13,7 @@ namespace MauiApp3
         public MainPage()
         {
             InitializeComponent();
-            ItemsCollection = new ObservableCollection<Item>
-        {
-            new Item  { Name =  "IPhone Charger", Category = "Technology", Date = "08/12/2025", Location = "Building 11.5.204", Notes = "It is a charger"},
-            new Item  { Name =  "Black Jacket", Category = "Clothing", Date = "08/12/2025", Location = "Building 11.5.204", Notes = "It is black"}
-        };
-
-            BindingContext = this;
+            BindingContext = new ItemsViewModel();
         }
 
 
@@ -63,14 +57,16 @@ namespace MauiApp3
         //}
 
 
+        // When request is clicked, item status is changed and new button is generated
         private void MyButtonClicked(object sender, EventArgs e)
         {
             Button clickedButton = (Button)sender;
 
             isButtonPressed = !isButtonPressed; // Toggle the state
 
-            if (isButtonPressed)
+            if (isButtonPressed && clickedButton?.BindingContext is Item selectedItem) 
             {
+                selectedItem.Status = "Changed";
                 clickedButton.BackgroundColor = Colors.Grey;
                 clickedButton.Text = "Pending Request";
                 clickedButton.TextColor = Colors.White;

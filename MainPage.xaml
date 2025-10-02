@@ -3,44 +3,52 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MauiApp3.MainPage">
 
-    <ScrollView>
-        <VerticalStackLayout
-            Padding="30,0"
-            Spacing="25">
-            <Image
-                Source="dotnet_bot.png"
-                HeightRequest="185"
-                Aspect="AspectFit"
-                SemanticProperties.Description="dot net bot in a hovercraft number nine" />
-            
-            
+    <Grid RowDefinitions="Auto, *"
+          Padding="30,0"
+          RowSpacing="20">
+
+        <!-- Static Header Section -->
+        <VerticalStackLayout Grid.Row="0" Spacing="20">
+
+            <Image Source="dotnet_bot.png"
+                   HeightRequest="185"
+                   Aspect="AspectFit"
+                   SemanticProperties.Description="dot net bot in a hovercraft number nine" />
+
             <HorizontalStackLayout>
-                <Button
-                x:Name="CounterBtn"
-                Text="Click me" 
-                Clicked="OnCounterClicked"
-                SemanticProperties.Hint="Counts the number of times you click"
-                HorizontalOptions="Fill" />
+                <Button x:Name="CounterBtn"
+                        Text="Click me" 
+                        Clicked="OnCounterClicked"
+                        HorizontalOptions="Fill" />
 
-                <Button
-                x:Name="CounterBtn1"
-                Text="Other Page" 
-                SemanticProperties.Hint="Counts the number of times you click"
-                HorizontalOptions="Fill" />
-
+                <Button x:Name="CounterBtn1"
+                        Text="Other Page" 
+                        HorizontalOptions="Fill" />
             </HorizontalStackLayout>
 
             <Label Text="Item Collection"
                    FontSize="24"
                    HorizontalOptions="Center" />
+        </VerticalStackLayout>
+
+        <!-- Scrollable Collection Section -->
+        <Border Grid.Row="1"
+                Stroke="Gray"
+                StrokeShape="RoundRectangle 10"
+                Padding="10"
+                Margin="5">
 
             <CollectionView ItemsSource="{Binding ItemsCollection}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <Border Stroke="Gray" StrokeShape="RoundRectangle 10" Padding="10" Margin="5">
-                            <Grid ColumnDefinitions="*,Auto">
+                        <Border Stroke="LightGray" 
+                                StrokeShape="RoundRectangle 10"
+                                Padding="10"
+                                Margin="5">
 
-                                <VerticalStackLayout Grid.Column="0" Spacing="1">
+                            <Grid ColumnDefinitions="*,Auto">
+                                <!-- Left side: Item details -->
+                                <VerticalStackLayout Grid.Column="0" Spacing="3">
                                     <Label Text="{Binding Name}" FontAttributes="Bold"/>
                                     <Label Text="{Binding Date}" />
                                     <Label Text="{Binding Category}" />
@@ -48,28 +56,27 @@
                                     <Label Text="{Binding Location}" />
                                 </VerticalStackLayout>
 
-                                <VerticalStackLayout Grid.Column="1" Spacing="5" HorizontalOptions="End">
-                                    <Button  
-                            FontSize="12" 
-                            FontAttributes="Bold" 
-                            Text="View Item"
-                            Clicked="OnGoToDetailsClicked" />
+                                <!-- Right side: Buttons -->
+                                <VerticalStackLayout Grid.Column="1"
+                                                     Spacing="5"
+                                                     HorizontalOptions="End">
+                                    <Button Text="View Item"
+                                            FontSize="12"
+                                            FontAttributes="Bold"
+                                            Clicked="OnGoToDetailsClicked" />
 
-                                    <Button  
-                            FontSize="12" 
-                            Background="#2BA025"
-                            FontAttributes="Bold" 
-                            Text="Request Claim"
-                            Clicked="MyButtonClicked" />
+                                    <Button Text="Request Claim"
+                                            FontSize="12"
+                                            FontAttributes="Bold"
+                                            Background="#2BA025"
+                                            Clicked="MyButtonClicked" />
                                 </VerticalStackLayout>
                             </Grid>
+
                         </Border>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
-
-        </VerticalStackLayout>
-    </ScrollView>
-    
-
+        </Border>
+    </Grid>
 </ContentPage>
