@@ -5,8 +5,6 @@ namespace MauiApp3
 {
     public partial class MainPage : ContentPage
     {
-        int count = 0;
-        int count1 = 0;
         private bool isButtonPressed = false;
         public ObservableCollection<Item> ItemsCollection { get; set; }
 
@@ -17,18 +15,6 @@ namespace MauiApp3
         }
 
 
-        private void OnCounterClicked(object? sender, EventArgs e)
-        {
-            count++;
-
-            if (count == 1)
-                CounterBtn.Text = $"Clicked {count} time";
-            else
-                CounterBtn.Text = $"Clicked {count} times";
-
-            SemanticScreenReader.Announce(CounterBtn.Text);
-        }
-
         private async void OnGoToDetailsClicked(object sender, EventArgs e)
         {
             var button = sender as Button;
@@ -38,8 +24,6 @@ namespace MauiApp3
                 await Navigation.PushAsync(new NewPage1(selectedItem));
             }
         }
-
-
 
 
         //private void OnCounterClicked1(object? sender, EventArgs e)

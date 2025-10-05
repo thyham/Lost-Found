@@ -1,27 +1,21 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="MauiApp3.NewPage1"
-             Title="Item Details">
+             x:Class="MauiApp3.NewPage1">
 
     <ScrollView>
         <VerticalStackLayout Padding="20" Spacing="15">
 
-            <Label Text="Item Details"
+            <Label Text="{Binding Name}"
                    FontAttributes="Bold"
                    FontSize="28"
                    HorizontalOptions="Center"
                    Margin="0,10" />
 
-            <StackLayout>
-                <Label Text="Name:" 
-                       FontAttributes="Bold" 
-                       FontSize="18"/>
-                <Label Text="{Binding Name}" 
-                       FontSize="16" 
-                       TextColor="DarkSlateGray"/>
-            </StackLayout>
-            
+            <Image Source="iphonecharger.jpg"
+                   HeightRequest="185"
+                   Aspect="AspectFit"/>
+
             <StackLayout>
                 <Label Text="Date:" 
                        FontAttributes="Bold" 
@@ -60,6 +54,12 @@
                        FontSize="16" 
                        TextColor="DarkSlateGray"/>
             </StackLayout>
+
+            <Button Text="Request Claim"
+                    FontSize="15"
+                    FontAttributes="Bold"
+                    Background="#2BA025"
+                    Clicked="OnGoToRequestClicked" />
 
         </VerticalStackLayout>
     </ScrollView>

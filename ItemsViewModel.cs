@@ -32,7 +32,7 @@ namespace MauiApp3
             IEnumerable<Item> filtered;
             if (string.IsNullOrWhiteSpace(searchText))
             {
-                filtered = Enumerable.Empty<Item>();
+                filtered = ItemsCollection;
             }
             else
             {
@@ -58,7 +58,7 @@ namespace MauiApp3
                 {
                     _searchQuery = value;
                     OnPropertyChanged();
-                    FilterItems(_searchQuery); 
+                    FilterItems(_searchQuery);
                 }
             }
         }
