@@ -58,7 +58,7 @@
                 Preferences.Set("IsLoggedIn", true);
                 Preferences.Set("CurrentUser", username);
 
-                Application.Current.MainPage = new AppShell();
+                await Shell.Current.GoToAsync("///MainPage");
             }
             else
             {

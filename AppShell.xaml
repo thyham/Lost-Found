@@ -6,6 +6,13 @@
     xmlns:local="clr-namespace:MauiApp3"
     Shell.FlyoutBehavior="Flyout">
 
+
+    <ShellContent
+     Title="Login"
+     ContentTemplate="{DataTemplate local:LoginPage}"
+     Route="LoginPage" 
+     FlyoutItemIsVisible="False"/>
+
     <ShellContent
         Title="Home"
         ContentTemplate="{DataTemplate local:MainPage}"

@@ -5,6 +5,13 @@
         public AppShell()
         {
             InitializeComponent();
+            Routing.RegisterRoute(nameof(MainPage), typeof(MainPage));
+            
+            // If user is not logged in, navigate to login
+            if (!Preferences.Get("IsLoggedIn", false))
+            {
+                Current.GoToAsync("///LoginPage");
+            }
         }
 
         // Add this logout method
