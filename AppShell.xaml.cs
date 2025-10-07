@@ -6,5 +6,22 @@
         {
             InitializeComponent();
         }
+
+        // Add this logout method
+        private async void OnLogoutClicked(object sender, EventArgs e)
+        {
+            bool confirm = await DisplayAlert(
+                "Logout",
+                "Are you sure you want to logout?",
+                "Yes",
+                "No");
+
+            if (confirm)
+            {
+                Preferences.Remove("IsLoggedIn");
+                Preferences.Remove("CurrentUser");
+                Application.Current.MainPage = new NavigationPage(new LoginPage());
+            }
+        }
     }
 }

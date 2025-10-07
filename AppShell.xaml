@@ -4,11 +4,23 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:MauiApp3"
-    Title="MauiApp3">
+    Shell.FlyoutBehavior="Flyout">
 
     <ShellContent
         Title="Home"
         ContentTemplate="{DataTemplate local:MainPage}"
         Route="MainPage" />
+
+    <!-- Logout Button in Flyout Footer -->
+    <Shell.FlyoutFooter>
+        <VerticalStackLayout Padding="20">
+            <Button 
+                Text="Logout"
+                BackgroundColor="#FF3B30"
+                TextColor="White"
+                Clicked="OnLogoutClicked"
+                CornerRadius="8"/>
+        </VerticalStackLayout>
+    </Shell.FlyoutFooter>
 
 </Shell>
