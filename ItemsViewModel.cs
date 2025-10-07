@@ -16,10 +16,10 @@ namespace MauiApp3
         {
             ItemsCollection = new ObservableCollection<Item>
             {
-                new Item { Name = "IPhone Charger", Category = "Technology", Date = "08/12/2025", Location = "Building 11.5.204", Notes = "It is an iphone 16 charger", Status = "Pending" },
-                new Item { Name = "Black Jacket", Category = "Clothing", Date = "08/12/2025", Location = "Building 11.5.204", Notes = "It is a puffer jacket", Status = "Pending" },
-                new Item { Name = "Blue Jacket", Category = "Clothing", Date = "08/12/2025", Location = "Building 11.5.204", Notes = "It is a tommy hilfiger jacket", Status = "Pending" },
-                new Item { Name = "Samsung Charger", Category = "Technology", Date = "08/12/2025", Location = "Building 11.5.204", Notes = "It is a samsung 21fe charger", Status = "Pending" },
+                new Item { Id = 1, Name = "IPhone Charger", Category = "Technology", Date = "08/12/2025", Location = "Building 11.5.204", Notes = "It is an iphone 16 charger", Status = "Pending" },
+                new Item { Id = 2, Name = "Black Jacket", Category = "Clothing", Date = "08/12/2025", Location = "Building 11.5.204", Notes = "It is a puffer jacket", Status = "Pending" },
+                new Item { Id = 3, Name = "Blue Jacket", Category = "Clothing", Date = "08/12/2025", Location = "Building 11.5.204", Notes = "It is a tommy hilfiger jacket", Status = "Pending" },
+                new Item { Id = 4,  Name = "Samsung Charger", Category = "Technology", Date = "08/12/2025", Location = "Building 11.5.204", Notes = "It is a samsung 21fe charger", Status = "Pending" },
             };
 
             FilteredItems = new ObservableCollection<Item>();
