@@ -71,9 +71,12 @@
 	  <MauiXaml Update="NewPage1.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="RegisterPage.xaml">
+	  <MauiXaml Update="NewPage2.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+		<MauiXaml Update="RegisterPage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
 	</ItemGroup>
 
 </Project>
