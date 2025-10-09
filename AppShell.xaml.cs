@@ -14,7 +14,6 @@
             }
         }
 
-        // Add this logout method
         private async void OnLogoutClicked(object sender, EventArgs e)
         {
             bool confirm = await DisplayAlert(
