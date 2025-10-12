@@ -35,7 +35,7 @@
                 return;
             }
 
-            LoginButton.IsEnabled = false;
+            //LoginButton.IsEnabled = false;
             LoginButton.Text = "Logging in...";
 
             bool isAuthenticated = await AuthenticateUser(username, password);
@@ -58,7 +58,8 @@
                 Preferences.Set("IsLoggedIn", true);
                 Preferences.Set("CurrentUser", username);
 
-                await Shell.Current.GoToAsync("///MainPage");
+                await Shell.Current.GoToAsync($"//{nameof(MainPage)}");
+
             }
             else
             {

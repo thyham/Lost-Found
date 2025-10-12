@@ -1,21 +1,41 @@
+using System.Collections.ObjectModel;
+
 namespace MauiApp3;
 
-[QueryProperty(nameof(Item), "ItemPass")]
+[QueryProperty(nameof(ItemPass), "ItemPass")]
 public partial class NewPage1 : ContentPage
 {
-    public NewPage1(Item selectedItem)
-	{
+    private Item _item;
+
+    public Item ItemPass
+    {
+        get => _item;
+        set
+        {
+            _item = value;
+            BindingContext = _item; // Now binds your page to this specific item
+        }
+    }
+
+    public NewPage1()
+    {
         InitializeComponent();
-        BindingContext = selectedItem;
-	}
+    }
 
     private async void OnGoToRequestClicked(object sender, EventArgs e)
     {
         var button = sender as Button;
 
-        if (button?.BindingContext is Item selectedItem)
+        if (_item != null)
         {
-            await Navigation.PushAsync(new NewPage2(selectedItem));
+            // Navigate to the next page and pass the same item
+            await Shell.Current.GoToAsync($"{nameof(NewPage2)}", true,
+    new Dictionary<string, object> { { "ItemPass", _item } });
+
+        }
+        else
+        {
+            await DisplayAlert("Error", "No item data found.", "OK");
         }
     }
 }

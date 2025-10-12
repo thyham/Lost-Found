@@ -5,14 +5,14 @@
         public AppShell()
         {
             InitializeComponent();
-            Routing.RegisterRoute(nameof(MainPage), typeof(MainPage));
-            
-            // If user is not logged in, navigate to login
-            if (!Preferences.Get("IsLoggedIn", false))
-            {
-                Current.GoToAsync("///LoginPage");
-            }
+
+            Routing.RegisterRoute(nameof(NewPage1), typeof(NewPage1));
+            Routing.RegisterRoute(nameof(NewPage2), typeof(NewPage2));
+            Routing.RegisterRoute(nameof(LoginPage), typeof(LoginPage));
+            Routing.RegisterRoute(nameof(RegisterPage), typeof(RegisterPage));
+
         }
+
 
         private async void OnLogoutClicked(object sender, EventArgs e)
         {
@@ -26,7 +26,7 @@
             {
                 Preferences.Remove("IsLoggedIn");
                 Preferences.Remove("CurrentUser");
-                Application.Current.MainPage = new NavigationPage(new LoginPage());
+                await GoToAsync("//LoginPage"); 
             }
         }
     }

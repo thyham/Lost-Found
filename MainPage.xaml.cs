@@ -21,7 +21,9 @@ namespace MauiApp3
 
             if (button?.BindingContext is Item selectedItem)
             {
-                await Navigation.PushAsync(new NewPage1(selectedItem));
+                await Shell.Current.GoToAsync($"{nameof(NewPage1)}", true,
+                    new Dictionary<string, object> { { "ItemPass", selectedItem } });
+
             }
         }
 

@@ -16,7 +16,20 @@
     <ShellContent
         Title="Home"
         ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+        Route="MainPage" 
+        Shell.BackButtonBehavior="{x:Null}" />
+
+    <ShellContent
+     Title="Page 1"
+     ContentTemplate="{DataTemplate local:NewPage1}"
+     Route="NewPage1" 
+     FlyoutItemIsVisible="False"/>
+
+    <ShellContent
+     Title="Page 2"
+     ContentTemplate="{DataTemplate local:NewPage2}"
+     Route="NewPage2" 
+     FlyoutItemIsVisible="False"/>
 
     <!-- Logout Button in Flyout Footer -->
     <Shell.FlyoutFooter>

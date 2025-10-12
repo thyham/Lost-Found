@@ -9,7 +9,16 @@
 
         protected override Window CreateWindow(IActivationState? activationState)
         {
-            return new Window(new AppShell());
+            var window = new Window(new AppShell());
+
+            // Check login status BEFORE showing Shell UI
+            if (!Preferences.Get("IsLoggedIn", false))
+            {
+                // Navigate to LoginPage as the starting route
+                Shell.Current.GoToAsync("//LoginPage");
+            }
+
+            return window;
         }
     }
 }
