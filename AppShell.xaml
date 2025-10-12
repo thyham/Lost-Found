@@ -7,39 +7,48 @@
     Shell.FlyoutBehavior="Flyout"
     Title="MauiApp3">
 
+    <!-- Hidden pages (not shown in the flyout menu) -->
     <ShellContent
-     Title="Login"
-     ContentTemplate="{DataTemplate local:LoginPage}"
-     Route="LoginPage" 
-     FlyoutItemIsVisible="False"/>
+        Title="Login"
+        ContentTemplate="{DataTemplate local:LoginPage}"
+        Route="LoginPage"
+        FlyoutItemIsVisible="False" />
 
     <ShellContent
+        Title="NewPage1"
+        ContentTemplate="{DataTemplate local:NewPage1}"
+        Route="NewPage1"
+        FlyoutItemIsVisible="False" />
+
+    <ShellContent
+        Title="NewPage2"
+        ContentTemplate="{DataTemplate local:NewPage2}"
+        Route="NewPage2"
+        FlyoutItemIsVisible="False" />
+
+        <ShellContent
         Title="Home"
+        Icon="images.png"
         ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" 
-        Shell.BackButtonBehavior="{x:Null}" />
+        Route="MainPage" />
 
-    <ShellContent
-     Title="Page 1"
-     ContentTemplate="{DataTemplate local:NewPage1}"
-     Route="NewPage1" 
-     FlyoutItemIsVisible="False"/>
+        <ShellContent
+        Title="My Items"
+        Icon="list.png"
+        ContentTemplate="{DataTemplate local:MyItems}"
+        Route="MyItems" />
 
-    <ShellContent
-     Title="Page 2"
-     ContentTemplate="{DataTemplate local:NewPage2}"
-     Route="NewPage2" 
-     FlyoutItemIsVisible="False"/>
 
-    <!-- Logout Button in Flyout Footer -->
+
+    <!-- Flyout Footer for logout -->
     <Shell.FlyoutFooter>
         <VerticalStackLayout Padding="20">
-            <Button 
+            <Button
                 Text="Logout"
                 BackgroundColor="#FF3B30"
                 TextColor="White"
                 Clicked="OnLogoutClicked"
-                CornerRadius="8"/>
+                CornerRadius="8" />
         </VerticalStackLayout>
     </Shell.FlyoutFooter>
 

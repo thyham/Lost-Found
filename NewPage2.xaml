@@ -11,41 +11,35 @@
                    FontSize="24"
                    HorizontalOptions="Center" />
 
-            <Label Text="Item to be requested:" 
-                       FontSize="15"/>
-            <Label Text="{Binding Name}" 
-                       FontSize="15"/>
+            <Label Text="Item to be requested:" FontSize="15"/>
+            <Label Text="{Binding Name}" FontSize="15" />
 
             <StackLayout>
-                <Label Text="Student ID:" 
-                       FontAttributes="Bold" 
-                       FontSize="18"/>
-                <Entry Placeholder="Enter your student ID" Keyboard="Text" MaxLength="30" />
+                <Label Text="Student ID:" FontAttributes="Bold" FontSize="18"/>
+                <Entry x:Name="StudentIdEntry"
+                       IsEnabled="False"
+                       Text="1234"  
+                    Keyboard="Text"
+                       MaxLength="30" />
             </StackLayout>
 
             <StackLayout>
-                <Label Text="Name:" 
-                       FontAttributes="Bold" 
+                <Label Text="Additional Information:"
+                       FontAttributes="Bold"
                        FontSize="18"/>
-                <Entry Placeholder="Enter your name" Keyboard="Text" MaxLength="30" />
+                <Editor x:Name="DescriptionEditor"
+                        Placeholder="Enter a description" />
             </StackLayout>
 
-            <StackLayout>
-                <Label Text="Additional Information:" 
-                       FontAttributes="Bold" 
-                       FontSize="18"/>
-                <Editor Placeholder="Enter a description" />
-            </StackLayout>
-
-            <Label Text="Note: Request approval is not guaranteed. Please enter as much accurate information as you can." 
-                       FontSize="15"/>
+            <Label Text="Note: Request approval is not guaranteed. Please enter as much accurate information as you can."
+                   FontSize="15"/>
 
             <Button Text="Submit Request"
                     FontSize="15"
                     FontAttributes="Bold"
-                    Background="#2BA025"/>
+                    Background="#2BA025"
+                    Clicked="OnSubmitClicked" />
 
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>
-
