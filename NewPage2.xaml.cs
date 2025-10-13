@@ -1,22 +1,62 @@
-namespace MauiApp3;
 
-[QueryProperty(nameof(ItemPass), "ItemPass")]
-public partial class NewPage2 : ContentPage
+namespace MauiApp3
 {
-
-    private Item _item;
-
-    public Item ItemPass
+    public partial class NewPage2 : ContentPage
     {
-        get => _item;
-        set
+        private FormViewModel formViewModel = ViewModelLocator.FormVM;
+        private Item _item;
+
+        private int _loggedInStudentId = 1234;
+
+        public Item ItemPass
         {
-            _item = value;
+            get => _item;
+            set
+            {
+                _item = value;
+                BindingContext = _item; // Bind the current item
+            }
+        }
+        public NewPage2()
+        {
+            InitializeComponent();
+        }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+
+            // Always fetch the latest selected item
+            _item = ViewModelLocator.SelectedItem;
             BindingContext = _item;
         }
-    }
-    public NewPage2()
-    {
-        InitializeComponent();
+
+        public string ItemName => _item.Name;
+        private void OnSubmitClicked(object sender, EventArgs e)
+        {
+            var reasonText = DescriptionEditor.Text;
+
+            if (string.IsNullOrWhiteSpace(reasonText))
+            {
+                DisplayAlert("Error", "Please enter a description before submitting.", "OK");
+                return;
+            }
+
+            var newForm = new Form
+            {
+                formId = formViewModel.FormsCollection.Count + 1,
+                studentId = _loggedInStudentId,
+                itemId = _item.Id,
+                itemName = _item.Name,
+                Notes = reasonText,
+                Status = "Pending"
+            };
+
+            formViewModel.FormsCollection.Add(newForm);
+            formViewModel.FilterRequestedForms();
+
+            DisplayAlert("Submitted", "Your claim request has been submitted!", "OK");
+            Navigation.PopAsync();
+        }
     }
 }

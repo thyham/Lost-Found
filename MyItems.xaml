@@ -1,7 +1,8 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="MauiApp3.MainPage">
+             x:Class="MauiApp3.MyItems"
+             Title="MyItems">
 
     <Grid RowDefinitions="Auto, *"
           Padding="30,0"
@@ -14,9 +15,12 @@
                    FontSize="24"
                    HorizontalOptions="Center" />
 
-            <SearchBar Placeholder="Search..."
-               Text="{Binding SearchQuery}" />
-            
+            <Button Text="View Item"
+                    FontSize="12"
+                    FontAttributes="Bold"
+                    Clicked="PendingButtonClicked" />
+
+
         </VerticalStackLayout>
 
         <Border Grid.Row="1"
@@ -26,7 +30,7 @@
                 Margin="5">
 
 
-            <CollectionView ItemsSource="{Binding FilteredItems}">
+            <CollectionView x:Name="FormsList" ItemsSource="{Binding RequestedForms}">
 
                 <CollectionView.ItemsLayout>
                     <GridItemsLayout Orientation="Vertical" Span="2" />
@@ -34,7 +38,7 @@
 
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <Border Stroke="White" 
+                        <Border Stroke="White"
                                 StrokeShape="RoundRectangle 10"
                                 Padding="10"
                                 Margin="5"
@@ -46,14 +50,10 @@
                                        HeightRequest="100"
                                        Aspect="AspectFit" />
 
-                                <Label Text="{Binding Name}" 
+                                <Label Text="{Binding itemName}" 
                                        FontAttributes="Bold"
                                        HorizontalOptions="Center" />
 
-                                <Button Text="View Item"
-                                        FontSize="12"
-                                        FontAttributes="Bold"
-                                        Clicked="OnGoToDetailsClicked" />
 
                             </VerticalStackLayout>
 
