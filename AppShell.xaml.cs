@@ -13,6 +13,8 @@ namespace MauiApp3
             Routing.RegisterRoute(nameof(NewPage1), typeof(NewPage1));
             Routing.RegisterRoute(nameof(NewPage2), typeof(NewPage2));
             Routing.RegisterRoute(nameof(MyItems), typeof(MyItems));
+            Routing.RegisterRoute(nameof(RegisterPage), typeof(RegisterPage));
+
 
             Loaded += AppShell_Loaded;
         }

@@ -5,11 +5,70 @@ namespace MauiApp3
 {
     public static class UserService
     {
-        private static List<User> users = new List<User>
+        private static List<User> users = new List<User>();
+        private static readonly string usersFilePath = Path.Combine(FileSystem.AppDataDirectory, "users.txt");
+
+        // Load users from file when the service is first used
+        static UserService()
         {
-            new User { Username = "admin", Email = "admin@example.com", Password = "admin123" },
-            new User { Username = "demo", Email = "demo@example.com", Password = "demo123" }
-        };
+            LoadUsersFromFile();
+        }
+
+        private static void LoadUsersFromFile()
+        {
+            try
+            {
+                if (File.Exists(usersFilePath))
+                {
+                    var lines = File.ReadAllLines(usersFilePath);
+                    foreach (var line in lines)
+                    {
+                        if (string.IsNullOrWhiteSpace(line))
+                            continue;
+
+                        var parts = line.Split('|');
+                        if (parts.Length >= 3)
+                        {
+                            users.Add(new User
+                            {
+                                Username = parts[0],
+                                Email = parts[1],
+                                Password = parts[2],
+                                CreatedDate = parts.Length > 3 && DateTime.TryParse(parts[3], out var date)
+                                    ? date
+                                    : DateTime.Now
+                            });
+                        }
+                    }
+                }
+                else
+                {
+                    // Create default users if file doesn't exist
+                    users.Add(new User { Username = "admin", Email = "admin@example.com", Password = "admin123" });
+                    users.Add(new User { Username = "demo", Email = "demo@example.com", Password = "demo123" });
+                    SaveUsersToFile();
+                }
+            }
+            catch (Exception ex)
+            {
+                // If loading fails, use default users
+                users.Add(new User { Username = "admin", Email = "admin@example.com", Password = "admin123" });
+                users.Add(new User { Username = "demo", Email = "demo@example.com", Password = "demo123" });
+            }
+        }
+
+        private static void SaveUsersToFile()
+        {
+            try
+            {
+                var lines = users.Select(u => $"{u.Username}|{u.Email}|{u.Password}|{u.CreatedDate:O}");
+                File.WriteAllLines(usersFilePath, lines);
+            }
+            catch (Exception ex)
+            {
+                
+            }
+        }
 
         public static List<User> GetUsers()
         {
@@ -24,6 +83,7 @@ namespace MauiApp3
         public static void AddUser(User user)
         {
             users.Add(user);
+            SaveUsersToFile();
         }
 
         public static User GetUser(string username)
