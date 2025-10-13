@@ -15,7 +15,11 @@
             if (!Preferences.Get("IsLoggedIn", false))
             {
                 // Navigate to LoginPage as the starting route
-                Shell.Current.GoToAsync("//LoginPage");
+                // ✅ Delay navigation until Shell is initialized
+                Dispatcher.Dispatch(async () =>
+                {
+                    await Shell.Current.GoToAsync("//LoginPage");
+                });
             }
 
             return window;
