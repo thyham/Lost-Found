@@ -34,7 +34,7 @@ namespace MauiApp3
             {
                 // Show/hide flyout items based on user role
                 UpdateFlyoutVisibility();
-            }
+        }
         }
 
         private void UpdateFlyoutVisibility()

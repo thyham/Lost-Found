@@ -42,7 +42,7 @@
                 return;
             }
 
-            LoginButton.IsEnabled = false;
+            //LoginButton.IsEnabled = false;
             LoginButton.Text = "Logging in...";
 
             bool isAuthenticated = await AuthenticateUser(username, password);
@@ -78,7 +78,7 @@
                 }
                 else
                 {
-                    await Shell.Current.GoToAsync("//MainPage");
+                await Shell.Current.GoToAsync("//MainPage");
                 }
             }
             else

@@ -11,7 +11,7 @@ namespace MauiApp3
         public MainPage()
         {
             InitializeComponent();
-            BindingContext = ViewModelLocator.ItemsVM;
+            BindingContext = new ItemsViewModel();
         }
 
 

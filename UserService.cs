@@ -8,6 +8,7 @@ namespace MauiApp3
         private static List<User> users = new List<User>();
         private static readonly string usersFilePath = Path.Combine(FileSystem.AppDataDirectory, "users.txt");
 
+        // Load users from file when the service is first used
         static UserService()
         {
             LoadUsersFromFile();

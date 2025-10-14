@@ -7,33 +7,33 @@
     Shell.FlyoutBehavior="Flyout"
     Title="MauiApp3">
 
-	<!-- Hidden pages (not shown in the flyout menu) -->
-	<ShellContent
+    <!-- Hidden pages (not shown in the flyout menu) -->
+    <ShellContent
         Title="Login"
         ContentTemplate="{DataTemplate local:LoginPage}"
         Route="LoginPage"
         FlyoutItemIsVisible="False" />
 
-	<ShellContent
+    <ShellContent
         Title="NewPage1"
         ContentTemplate="{DataTemplate local:NewPage1}"
         Route="NewPage1"
         FlyoutItemIsVisible="False" />
 
-	<ShellContent
+    <ShellContent
         Title="NewPage2"
         ContentTemplate="{DataTemplate local:NewPage2}"
         Route="NewPage2"
         FlyoutItemIsVisible="False" />
 
 	<!-- Student Pages (visible in flyout for students) -->
-	<ShellContent
+        <ShellContent
         Title="Home"
         Icon="images.png"
         ContentTemplate="{DataTemplate local:MainPage}"
         Route="MainPage" />
 
-	<ShellContent
+        <ShellContent
         Title="My Items"
         Icon="list.png"
         ContentTemplate="{DataTemplate local:MyItems}"
@@ -47,16 +47,16 @@
         Route="StaffPage"
         FlyoutItemIsVisible="False" />
 
-	<!-- Flyout Footer for logout -->
-	<Shell.FlyoutFooter>
-		<VerticalStackLayout Padding="20">
-			<Button
+    <!-- Flyout Footer for logout -->
+    <Shell.FlyoutFooter>
+        <VerticalStackLayout Padding="20">
+            <Button
                 Text="Logout"
                 BackgroundColor="#FF3B30"
                 TextColor="White"
                 Clicked="OnLogoutClicked"
                 CornerRadius="8" />
-		</VerticalStackLayout>
-	</Shell.FlyoutFooter>
+        </VerticalStackLayout>
+    </Shell.FlyoutFooter>
 
 </Shell>
