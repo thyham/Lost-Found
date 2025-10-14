@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiApp3.MyItems"
+             Title="MyItems">
+
+    <Grid RowDefinitions="Auto, *"
+          Padding="30,0"
+          RowSpacing="20">
+
+        <VerticalStackLayout Grid.Row="0" Spacing="20">
+
+            <Label Text="Item Collection"
+                   FontAttributes="Bold"
+                   FontSize="24"
+                   HorizontalOptions="Center" />
+
+            <Button Text="View Item"
+                    FontSize="12"
+                    FontAttributes="Bold"
+                    Clicked="PendingButtonClicked" />
+
+
+        </VerticalStackLayout>
+
+        <Border Grid.Row="1"
+                Stroke="White"
+                StrokeShape="RoundRectangle 10"
+                Padding="10"
+                Margin="5">
+
+
+            <CollectionView x:Name="FormsList" ItemsSource="{Binding RequestedForms}">
+
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical" Span="2" />
+                </CollectionView.ItemsLayout>
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Border Stroke="White"
+                                StrokeShape="RoundRectangle 10"
+                                Padding="10"
+                                Margin="5"
+                                BackgroundColor="White">
+
+                            <VerticalStackLayout Spacing="8" HorizontalOptions="Center">
+
+                                <Image Source="iphonecharger.jpg"
+                                       HeightRequest="100"
+                                       Aspect="AspectFit" />
+
+                                <Label Text="{Binding itemName}" 
+                                       FontAttributes="Bold"
+                                       HorizontalOptions="Center" />
+
+
+                            </VerticalStackLayout>
+
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        </Border>
+    </Grid>
+</ContentPage>

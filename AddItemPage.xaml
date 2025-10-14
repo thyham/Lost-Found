@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiApp3.AddItemPage"
+             Title="Add New Lost Item">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="20">
+
+            <Label Text="Add New Lost Item"
+                   FontSize="24"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"
+                   Margin="0,0,0,10"/>
+
+            <StackLayout>
+                <Label Text="Item Name:" FontAttributes="Bold" FontSize="16"/>
+                <Border Stroke="#E0E0E0" StrokeThickness="1" Padding="10">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="8"/>
+                    </Border.StrokeShape>
+                    <Entry x:Name="NameEntry"
+                           Placeholder="Enter item name"
+                           MaxLength="100"/>
+                </Border>
+            </StackLayout>
+
+            <StackLayout>
+                <Label Text="Category:" FontAttributes="Bold" FontSize="16"/>
+                <Border Stroke="#E0E0E0" StrokeThickness="1" Padding="10">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="8"/>
+                    </Border.StrokeShape>
+                    <Picker x:Name="CategoryPicker">
+                        <Picker.ItemsSource>
+                            <x:Array Type="{x:Type x:String}">
+                                <x:String>Technology</x:String>
+                                <x:String>Clothing</x:String>
+                                <x:String>Books</x:String>
+                                <x:String>Accessories</x:String>
+                                <x:String>Keys</x:String>
+                                <x:String>Other</x:String>
+                            </x:Array>
+                        </Picker.ItemsSource>
+                    </Picker>
+                </Border>
+            </StackLayout>
+
+            <StackLayout>
+                <Label Text="Location Found:" FontAttributes="Bold" FontSize="16"/>
+                <Border Stroke="#E0E0E0" StrokeThickness="1" Padding="10">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="8"/>
+                    </Border.StrokeShape>
+                    <Entry x:Name="LocationEntry"
+                           Placeholder="E.g., Building 11.5.204"
+                           MaxLength="100"/>
+                </Border>
+            </StackLayout>
+
+            <StackLayout>
+                <Label Text="Date Found:" FontAttributes="Bold" FontSize="16"/>
+                <Border Stroke="#E0E0E0" StrokeThickness="1" Padding="10">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="8"/>
+                    </Border.StrokeShape>
+                    <DatePicker x:Name="DatePicker"
+                               Format="dd/MM/yyyy"/>
+                </Border>
+            </StackLayout>
+
+            <StackLayout>
+                <Label Text="Description/Notes:" FontAttributes="Bold" FontSize="16"/>
+                <Border Stroke="#E0E0E0" StrokeThickness="1" Padding="10">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="8"/>
+                    </Border.StrokeShape>
+                    <Editor x:Name="NotesEditor"
+                           Placeholder="Enter any additional details about the item"
+                           HeightRequest="100"/>
+                </Border>
+            </StackLayout>
+
+            <Label x:Name="ErrorLabel"
+                   Text=""
+                   TextColor="Red"
+                   FontSize="14"
+                   IsVisible="False"
+                   HorizontalOptions="Center"/>
+
+            <Button Text="Add Item"
+                    FontSize="16"
+                    FontAttributes="Bold"
+                    BackgroundColor="#28A745"
+                    TextColor="White"
+                    HeightRequest="50"
+                    Clicked="OnAddItemClicked"
+                    Margin="0,10,0,0"/>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

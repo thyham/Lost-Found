@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiApp3.LoginPage"
+             Title="Login"
+             Shell.NavBarIsVisible="False">
+
+    <ScrollView>
+        <VerticalStackLayout 
+            Spacing="25" 
+            Padding="30"
+            VerticalOptions="Center">
+
+            <Label 
+                Text="Lost &amp; Found"
+                FontSize="32"
+                FontAttributes="Bold"
+                HorizontalOptions="Center"
+                Margin="0,0,0,30"/>
+
+            <Border
+                Stroke="#E0E0E0"
+                StrokeThickness="1"
+                Background="White"
+                Padding="10">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="8"/>
+                </Border.StrokeShape>
+                <Entry 
+                    x:Name="UsernameEntry"
+                    Placeholder="Username"
+                    PlaceholderColor="Gray"
+                    TextColor="Black"/>
+            </Border>
+
+            <Border
+                Stroke="#E0E0E0"
+                StrokeThickness="1"
+                Background="White"
+                Padding="10">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="8"/>
+                </Border.StrokeShape>
+                <Entry 
+                    x:Name="PasswordEntry"
+                    Placeholder="Password"
+                    PlaceholderColor="Gray"
+                    TextColor="Black"
+                    IsPassword="True"/>
+            </Border>
+
+            <Label 
+                x:Name="ErrorLabel"
+                Text=""
+                TextColor="Red"
+                FontSize="14"
+                IsVisible="False"
+                HorizontalOptions="Center"/>
+
+            <Button 
+                x:Name="LoginButton"
+                Text="Login"
+                BackgroundColor="#007AFF"
+                TextColor="White"
+                FontAttributes="Bold"
+                HeightRequest="50"
+                CornerRadius="8"
+                Clicked="OnLoginClicked"/>
+
+            <Button 
+                x:Name="RegisterButton"
+                Text="Create Account"
+                BackgroundColor="Transparent"
+                TextColor="#007AFF"
+                BorderColor="#007AFF"
+                BorderWidth="1"
+                HeightRequest="50"
+                CornerRadius="8"
+                Clicked="OnRegisterClicked"/>
+
+            <HorizontalStackLayout 
+                HorizontalOptions="Center"
+                Spacing="10">
+                <CheckBox 
+                    x:Name="RememberMeCheckBox"
+                    Color="#007AFF"/>
+                <Label 
+                    Text="Remember Me"
+                    VerticalOptions="Center"/>
+            </HorizontalStackLayout>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

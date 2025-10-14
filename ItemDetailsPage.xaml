@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiApp3.ItemDetailsPage"
+             Title="Item Details">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="20">
+
+            <Label Text="Lost Item Details"
+                   FontSize="24"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"
+                   Margin="0,0,0,10"/>
+
+            <Image Source="iphonecharger.jpg"
+                   HeightRequest="200"
+                   Aspect="AspectFit"/>
+
+            <Border Stroke="#E0E0E0" StrokeThickness="2" Padding="15" BackgroundColor="White">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="10"/>
+                </Border.StrokeShape>
+                <VerticalStackLayout Spacing="15">
+
+                    <StackLayout>
+                        <Label Text="Item Name:" FontAttributes="Bold" FontSize="16"/>
+                        <Label Text="{Binding Name}" FontSize="18" TextColor="DarkSlateGray"/>
+                    </StackLayout>
+
+                    <StackLayout>
+                        <Label Text="Item ID:" FontAttributes="Bold" FontSize="16"/>
+                        <Label Text="{Binding Id}" FontSize="18" TextColor="DarkSlateGray"/>
+                    </StackLayout>
+
+                    <StackLayout>
+                        <Label Text="Category:" FontAttributes="Bold" FontSize="16"/>
+                        <Label Text="{Binding Category}" FontSize="18" TextColor="DarkSlateGray"/>
+                    </StackLayout>
+
+                    <StackLayout>
+                        <Label Text="Date Found:" FontAttributes="Bold" FontSize="16"/>
+                        <Label Text="{Binding Date}" FontSize="18" TextColor="DarkSlateGray"/>
+                    </StackLayout>
+
+                    <StackLayout>
+                        <Label Text="Location Found:" FontAttributes="Bold" FontSize="16"/>
+                        <Label Text="{Binding Location}" FontSize="18" TextColor="DarkSlateGray"/>
+                    </StackLayout>
+
+                    <StackLayout>
+                        <Label Text="Description:" FontAttributes="Bold" FontSize="16"/>
+                        <Label Text="{Binding Notes}" FontSize="18" TextColor="DarkSlateGray"/>
+                    </StackLayout>
+
+                    <StackLayout>
+                        <Label Text="Status:" FontAttributes="Bold" FontSize="16"/>
+                        <Label Text="{Binding Status}" FontSize="18" FontAttributes="Bold">
+                            <Label.Triggers>
+                                <DataTrigger TargetType="Label" Binding="{Binding Status}" Value="Pending">
+                                    <Setter Property="TextColor" Value="#FFC107"/>
+                                </DataTrigger>
+                                <DataTrigger TargetType="Label" Binding="{Binding Status}" Value="Confirmed">
+                                    <Setter Property="TextColor" Value="#28A745"/>
+                                </DataTrigger>
+                            </Label.Triggers>
+                        </Label>
+                    </StackLayout>
+
+                </VerticalStackLayout>
+            </Border>
+
+            <Button Text="Close"
+                    FontSize="16"
+                    BackgroundColor="#6C757D"
+                    TextColor="White"
+                    HeightRequest="50"
+                    Clicked="OnCloseClicked"/>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>
