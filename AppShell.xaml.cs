@@ -68,6 +68,8 @@ namespace MauiApp3
 
             if (confirm)
             {
+                FlyoutIsPresented = false;
+
                 Preferences.Remove("IsLoggedIn");
                 Preferences.Remove("CurrentUser");
                 Preferences.Remove("IsStaff");

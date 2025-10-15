@@ -6,13 +6,25 @@
         {
             InitializeComponent();
             var usersFilePath = Path.Combine(FileSystem.AppDataDirectory, "users.txt");
-            if (File.Exists(usersFilePath))
-            {
-                File.Delete(usersFilePath);
-                // Force UserService to reinitialize
-                var users = UserService.GetUsers();
-            }
+            //if (File.Exists(usersFilePath))
+            //{
+            //    File.Delete(usersFilePath);
+            //    // Force UserService to reinitialize
+            //    var users = UserService.GetUsers();
+            //}
             CheckRememberedUser();
+        }
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+
+            // Reset login button state when page appears
+            LoginButton.IsEnabled = true;
+            LoginButton.Text = "Login";
+
+            // Clear error message
+            ErrorLabel.IsVisible = false;
+            ErrorLabel.Text = string.Empty;
         }
 
         private void CheckRememberedUser()
