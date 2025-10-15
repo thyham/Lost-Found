@@ -20,6 +20,8 @@ namespace MauiApp3
             Routing.RegisterRoute(nameof(ItemDetailsPage), typeof(ItemDetailsPage));
             Routing.RegisterRoute(nameof(RequestDetailsPage), typeof(RequestDetailsPage));
 
+            Navigated += OnShellNavigated;
+
             Loaded += AppShell_Loaded;
         }
 
@@ -35,6 +37,21 @@ namespace MauiApp3
                 // Show/hide flyout items based on user role
                 UpdateFlyoutVisibility();
         }
+        }
+
+        private void OnShellNavigated(object sender, ShellNavigatedEventArgs e)
+        {
+            // Disable flyout on login and register pages
+            var currentPage = CurrentPage?.GetType().Name;
+
+            if (currentPage == nameof(LoginPage) || currentPage == nameof(RegisterPage))
+            {
+                FlyoutBehavior = FlyoutBehavior.Disabled;
+            }
+            else
+            {
+                FlyoutBehavior = FlyoutBehavior.Flyout;
+            }
         }
 
         private void UpdateFlyoutVisibility()

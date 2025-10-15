@@ -4,7 +4,7 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:MauiApp3"
-    Shell.FlyoutBehavior="Flyout"
+    Shell.FlyoutBehavior="Disabled"
     Title="MauiApp3">
 
     <!-- Hidden pages (not shown in the flyout menu) -->
@@ -12,6 +12,12 @@
         Title="Login"
         ContentTemplate="{DataTemplate local:LoginPage}"
         Route="LoginPage"
+        FlyoutItemIsVisible="False" />
+
+    <ShellContent
+        Title="Register"
+        ContentTemplate="{DataTemplate local:RegisterPage}"
+        Route="RegisterPage"
         FlyoutItemIsVisible="False" />
 
     <ShellContent
@@ -26,26 +32,25 @@
         Route="NewPage2"
         FlyoutItemIsVisible="False" />
 
-	<!-- Student Pages (visible in flyout for students) -->
-        <ShellContent
+    <!-- Student Pages (visible in flyout for students) -->
+    <ShellContent
         Title="Home"
         Icon="images.png"
         ContentTemplate="{DataTemplate local:MainPage}"
         Route="MainPage" />
 
-        <ShellContent
+    <ShellContent
         Title="My Items"
         Icon="list.png"
         ContentTemplate="{DataTemplate local:MyItems}"
         Route="MyItems" />
 
-	<!-- Staff Pages (visible in flyout for staff) -->
-	<ShellContent
+    <!-- Staff Pages (visible in flyout for staff) -->
+    <ShellContent
         Title="Staff Dashboard"
         Icon="list.png"
         ContentTemplate="{DataTemplate local:StaffPage}"
-        Route="StaffPage"
-        FlyoutItemIsVisible="False" />
+        Route="StaffPage" />
 
     <!-- Flyout Footer for logout -->
     <Shell.FlyoutFooter>
