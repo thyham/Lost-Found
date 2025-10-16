@@ -14,6 +14,7 @@ namespace MauiApp3
             string email = EmailEntry.Text?.Trim();
             string password = PasswordEntry.Text;
             string confirmPassword = ConfirmPasswordEntry.Text;
+            string role = RolePicker.SelectedItem?.ToString() ?? "Student";
 
             if (string.IsNullOrWhiteSpace(username))
             {
@@ -72,12 +73,13 @@ namespace MauiApp3
             {
                 Username = username,
                 Email = email,
-                Password = password
+                Password = password,
+                Role = role
             };
 
             UserService.AddUser(newUser);
 
-            ShowSuccess("Account created successfully!");
+            ShowSuccess($"Account created successfully as {role}!");
 
             await Task.Delay(1500);
 

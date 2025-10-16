@@ -1,4 +1,5 @@
 ﻿using Microsoft.Maui.Controls;
+using System.Linq;
 
 namespace MauiApp3
 {
@@ -14,7 +15,12 @@ namespace MauiApp3
             Routing.RegisterRoute(nameof(NewPage2), typeof(NewPage2));
             Routing.RegisterRoute(nameof(MyItems), typeof(MyItems));
             Routing.RegisterRoute(nameof(RegisterPage), typeof(RegisterPage));
+            Routing.RegisterRoute(nameof(StaffPage), typeof(StaffPage));
+            Routing.RegisterRoute(nameof(AddItemPage), typeof(AddItemPage));
+            Routing.RegisterRoute(nameof(ItemDetailsPage), typeof(ItemDetailsPage));
+            Routing.RegisterRoute(nameof(RequestDetailsPage), typeof(RequestDetailsPage));
 
+            Navigated += OnShellNavigated;
 
             Loaded += AppShell_Loaded;
         }
@@ -25,6 +31,47 @@ namespace MauiApp3
             if (!Preferences.Get("IsLoggedIn", false))
             {
                 await GoToAsync("//LoginPage");
+            }
+            else
+            {
+                // Show/hide flyout items based on user role
+                UpdateFlyoutVisibility();
+        }
+        }
+
+        private void OnShellNavigated(object sender, ShellNavigatedEventArgs e)
+        {
+            // Disable flyout on login and register pages
+            var currentPage = CurrentPage?.GetType().Name;
+
+            if (currentPage == nameof(LoginPage) || currentPage == nameof(RegisterPage))
+            {
+                FlyoutBehavior = FlyoutBehavior.Disabled;
+            }
+            else
+            {
+                FlyoutBehavior = FlyoutBehavior.Flyout;
+            }
+        }
+
+        private void UpdateFlyoutVisibility()
+        {
+            bool isStaff = Preferences.Get("IsStaff", false);
+
+            // Get all ShellContent items from the Shell
+            var allContent = this.Items.OfType<ShellContent>();
+
+            foreach (var content in allContent)
+            {
+                // Hide student pages for staff and vice versa
+                if (content.Route == "MainPage" || content.Route == "MyItems")
+                {
+                    content.FlyoutItemIsVisible = !isStaff;
+                }
+                else if (content.Route == "StaffPage")
+                {
+                    content.FlyoutItemIsVisible = isStaff;
+                }
             }
         }
 
@@ -38,8 +85,11 @@ namespace MauiApp3
 
             if (confirm)
             {
+                FlyoutIsPresented = false;
+
                 Preferences.Remove("IsLoggedIn");
                 Preferences.Remove("CurrentUser");
+                Preferences.Remove("IsStaff");
 
                 // Navigate back to login page and clear navigation stack
                 await GoToAsync("//LoginPage");

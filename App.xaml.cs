@@ -21,6 +21,23 @@
                     await Shell.Current.GoToAsync("//LoginPage");
                 });
             }
+            else
+            {
+                // User is logged in, check their role and navigate accordingly
+                bool isStaff = Preferences.Get("IsStaff", false);
+
+                Dispatcher.Dispatch(async () =>
+                {
+                    if (isStaff)
+                    {
+                        await Shell.Current.GoToAsync("//StaffPage");
+                    }
+                    else
+                    {
+                        await Shell.Current.GoToAsync("//MainPage");
+                    }
+                });
+            }
 
             return window;
         }
