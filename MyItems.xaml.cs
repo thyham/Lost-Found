@@ -1,59 +1,96 @@
 using System.Collections.ObjectModel;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace MauiApp3
 {
     public partial class MyItems : ContentPage
     {
-        private bool isButtonPressed = false;
         private FormViewModel viewModel;
-        private bool isShowingPending = false;
-        private bool isShowingConfirmed = false;
-        public ObservableCollection<Item> FormsCollection { get; set; }
+        private Button? activeButton = null; // Tracks which tab is currently active
 
         public MyItems()
         {
             InitializeComponent();
             viewModel = ViewModelLocator.FormVM;
             BindingContext = viewModel;
+
+            // Default view: show all requested forms
+            viewModel.FilterRequestedForms();
+            FormsList.ItemsSource = viewModel.RequestedForms;
         }
 
-
-        private void PendingButtonClicked(object sender, EventArgs e)
+        private async void OnViewRequestDetailsClicked(object sender, EventArgs e)
         {
-            isShowingPending = !isShowingPending;
+            var button = sender as Button;
 
-            if (isShowingPending)
+            if (button?.BindingContext is Form selectedForm)
             {
+                if (selectedForm.Status == "Pending")
+                {
+                    await Navigation.PushAsync(new StudentRequestDetailsPage(selectedForm));
+                }
+                else
+                {
+                    await Navigation.PushAsync(new RequestDetailsPage(selectedForm));
+                }
+            }
+        }
+
+        private void OnApprovedFormsTabClicked(object sender, EventArgs e)
+        {
+            HandleTabButtonClick(ApprovedFormsTabButton, "Approved");
+        }
+
+        private void OnRejectedFormsTabClicked(object sender, EventArgs e)
+        {
+            HandleTabButtonClick(RejectedFormsTabButton, "Rejected");
+        }
+
+        private void HandleTabButtonClick(Button clickedButton, string filterType)
+        {
+            // If clicking the same active button again, unselect and go back to RequestedForms
+            if (activeButton == clickedButton)
+            {
+                ResetButtons();
                 viewModel.FilterRequestedForms();
                 FormsList.ItemsSource = viewModel.RequestedForms;
+                activeButton = null;
+                return;
             }
-            else
+
+            // Set new active button (highlight) and reset the other
+            SetActiveButton(clickedButton);
+            activeButton = clickedButton;
+
+            // Filter and update based on the selected tab
+            switch (filterType)
             {
-                FormsList.ItemsSource = viewModel.FormsCollection;
+                case "Approved":
+                    viewModel.FilterApprovedForms();
+                    FormsList.ItemsSource = viewModel.ApprovedForms;
+                    break;
+
+                case "Rejected":
+                    viewModel.FilterRejectedForms();
+                    FormsList.ItemsSource = viewModel.RejectedForms;
+                    break;
             }
         }
 
+        private void SetActiveButton(Button active)
+        {
+            // Reset all button colors
+            ApprovedFormsTabButton.BackgroundColor = Color.FromArgb("#6C757D");
+            RejectedFormsTabButton.BackgroundColor = Color.FromArgb("#6C757D");
 
+            // Highlight active one
+            active.BackgroundColor = Color.FromArgb("#007BFF");
+        }
 
-
-        //private void OnCounterClicked1(object? sender, EventArgs e)
-        //{
-        //    count1++;
-        //    if (count1 > 10)
-        //    {
-        //        CounterBtn1.Text = $"Clicked {count1} time";
-        //        count1 += 10;
-        //    }
-        //    else
-        //        CounterBtn1.Text = $"Clicked {count1} times";
-
-        //    SemanticScreenReader.Announce(CounterBtn1.Text);
-        //}
-
-
-        // When request is clicked, item status is changed and new button is generated
-
+        private void ResetButtons()
+        {
+            ApprovedFormsTabButton.BackgroundColor = Color.FromArgb("#6C757D");
+            RejectedFormsTabButton.BackgroundColor = Color.FromArgb("#6C757D");
+        }
 
     }
 }

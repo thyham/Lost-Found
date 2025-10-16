@@ -15,10 +15,26 @@
                    FontSize="24"
                    HorizontalOptions="Center" />
 
-            <Button Text="View Item"
+            <Label Text="Filter by:"
+                   FontSize="12"
+                   FontAttributes="Bold"/>
+
+            <HorizontalStackLayout>
+                <Button x:Name="ApprovedFormsTabButton"
+                    Text="Approved"
                     FontSize="12"
+                    BackgroundColor="#6C757D"
                     FontAttributes="Bold"
-                    Clicked="PendingButtonClicked" />
+                    Clicked="OnApprovedFormsTabClicked" />
+
+                <Button x:Name="RejectedFormsTabButton"
+                    Text="Rejected"
+                    FontSize="12"
+                    BackgroundColor="#6C757D"
+                    FontAttributes="Bold"
+                    Clicked="OnRejectedFormsTabClicked" />
+            </HorizontalStackLayout>
+
 
 
         </VerticalStackLayout>
@@ -53,6 +69,19 @@
                                 <Label Text="{Binding itemName}" 
                                        FontAttributes="Bold"
                                        HorizontalOptions="Center" />
+
+                                <Label Text="{Binding Notes}" 
+                                       FontAttributes="Bold"
+                                       HorizontalOptions="Center" />
+
+                                <Label Text="{Binding Status}" 
+                                       FontAttributes="Bold"
+                                       HorizontalOptions="Center" />
+
+                                <Button Text="View Details"
+                                                    FontSize="12"
+                                                    BackgroundColor="#007AFF"
+                                                    Clicked="OnViewRequestDetailsClicked"/>
 
 
                             </VerticalStackLayout>
