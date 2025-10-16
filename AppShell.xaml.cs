@@ -21,7 +21,6 @@ namespace MauiApp3
             Routing.RegisterRoute(nameof(RequestDetailsPage), typeof(RequestDetailsPage));
 
             Navigated += OnShellNavigated;
-
             Loaded += AppShell_Loaded;
         }
 
@@ -36,7 +35,7 @@ namespace MauiApp3
             {
                 // Show/hide flyout items based on user role
                 UpdateFlyoutVisibility();
-        }
+            }
         }
 
         private void OnShellNavigated(object sender, ShellNavigatedEventArgs e)
@@ -51,6 +50,8 @@ namespace MauiApp3
             else
             {
                 FlyoutBehavior = FlyoutBehavior.Flyout;
+                // Update visibility when navigating to ensure correct items show
+                UpdateFlyoutVisibility();
             }
         }
 
@@ -58,20 +59,20 @@ namespace MauiApp3
         {
             bool isStaff = Preferences.Get("IsStaff", false);
 
-            // Get all ShellContent items from the Shell
-            var allContent = this.Items.OfType<ShellContent>();
-
-            foreach (var content in allContent)
+            // Use x:Name references for direct access
+            if (isStaff)
             {
-                // Hide student pages for staff and vice versa
-                if (content.Route == "MainPage" || content.Route == "MyItems")
-                {
-                    content.FlyoutItemIsVisible = !isStaff;
-                }
-                else if (content.Route == "StaffPage")
-                {
-                    content.FlyoutItemIsVisible = isStaff;
-                }
+                // Staff: Show only Staff Dashboard
+                HomeShellContent.FlyoutItemIsVisible = false;
+                MyItemsShellContent.FlyoutItemIsVisible = false;
+                StaffPageShellContent.FlyoutItemIsVisible = true;
+            }
+            else
+            {
+                // Student: Show Home and My Items
+                HomeShellContent.FlyoutItemIsVisible = true;
+                MyItemsShellContent.FlyoutItemIsVisible = true;
+                StaffPageShellContent.FlyoutItemIsVisible = false;
             }
         }
 

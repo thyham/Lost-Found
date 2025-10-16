@@ -32,25 +32,31 @@
         Route="NewPage2"
         FlyoutItemIsVisible="False" />
 
-    <!-- Student Pages (visible in flyout for students) -->
+    <!-- Student Pages (visible in flyout for students ONLY) -->
     <ShellContent
+        x:Name="HomeShellContent"
         Title="Home"
         Icon="images.png"
         ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+        Route="MainPage"
+        FlyoutItemIsVisible="False" />
 
     <ShellContent
+        x:Name="MyItemsShellContent"
         Title="My Items"
         Icon="list.png"
         ContentTemplate="{DataTemplate local:MyItems}"
-        Route="MyItems" />
+        Route="MyItems"
+        FlyoutItemIsVisible="False" />
 
-    <!-- Staff Pages (visible in flyout for staff) -->
+    <!-- Staff Pages (visible in flyout for staff ONLY) -->
     <ShellContent
+        x:Name="StaffPageShellContent"
         Title="Staff Dashboard"
         Icon="list.png"
         ContentTemplate="{DataTemplate local:StaffPage}"
-        Route="StaffPage" />
+        Route="StaffPage"
+        FlyoutItemIsVisible="False" />
 
     <!-- Flyout Footer for logout -->
     <Shell.FlyoutFooter>
