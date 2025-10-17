@@ -18,7 +18,7 @@
                 <Label Text="Student ID:" FontAttributes="Bold" FontSize="18"/>
                 <Entry x:Name="StudentIdEntry"
                        IsEnabled="False"
-                       Text="1234"  
+                       Text="{Binding studentId}"  
                     Keyboard="Text"
                        MaxLength="30" />
             </StackLayout>

@@ -61,6 +61,7 @@
 
             if (isAuthenticated)
             {
+                var user = UserService.GetUser(username);
                 // Save Remember Me preferences
                 if (RememberMeCheckBox.IsChecked)
                 {
@@ -74,9 +75,9 @@
                     Preferences.Remove("SavedUsername");
                     Preferences.Remove("SavedPassword");
                 }
-
                 // Save login status and current user
                 Preferences.Set("IsLoggedIn", true);
+                Preferences.Set("CurrentId", user.Id);
                 Preferences.Set("CurrentUser", username);
 
                 // Check if user is staff or student
@@ -95,7 +96,7 @@
             }
             else
             {
-                ShowError("Invalid username or password");
+                ShowError("Invalid username " + username + " or password " + password );
                 LoginButton.IsEnabled = true;
                 LoginButton.Text = "Login";
             }
@@ -106,6 +107,9 @@
             await Task.Delay(1000); // Simulate network delay
             var users = UserService.GetUsers();
             return users.Any(u => u.Username == username && u.Password == password);
+
+            //Replace return statement with this to show debug logs
+            //return UserService.ValidateUser(username, password);
         }
 
         private void ShowError(string message)

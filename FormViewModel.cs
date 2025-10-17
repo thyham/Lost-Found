@@ -30,6 +30,24 @@ namespace MauiApp3
             ApprovedForms = new ObservableCollection<Form>();
         }
 
+
+        public void StaffFilterRequestedForms()
+        {
+            RequestedForms.Clear();
+
+            IEnumerable<Form> requested;
+            {
+                RequestedForms.Clear();
+                requested = FormsCollection.Where(form =>
+                    form.Status.Contains("Pending", StringComparison.OrdinalIgnoreCase) &&
+                    form.studentId.Equals(Preferences.Get("CurrentId", -1)));
+            }
+
+            foreach (var item in requested)
+            {
+                RequestedForms.Add(item);
+            }
+        }
         public void FilterRequestedForms()
         {
             RequestedForms.Clear();
@@ -38,7 +56,8 @@ namespace MauiApp3
             {
                 RequestedForms.Clear();
                 requested = FormsCollection.Where(form =>
-                    form.Status.Contains("Pending", StringComparison.OrdinalIgnoreCase));
+                    form.Status.Contains("Pending", StringComparison.OrdinalIgnoreCase) &&
+                    form.studentId.Equals(Preferences.Get("CurrentId", -1)));
             }
 
             foreach (var item in requested)

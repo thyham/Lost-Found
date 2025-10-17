@@ -37,7 +37,7 @@
             ItemsTabButton.BackgroundColor = Color.FromArgb("#6C757D");
             RequestsTabButton.BackgroundColor = Color.FromArgb("#007AFF");
 
-            formViewModel.FilterRequestedForms();
+            formViewModel.StaffFilterRequestedForms(); //staff lists all requested forms, student lists all requested forms linked to student ID
         }
 
         // Item Management
