@@ -14,27 +14,6 @@ namespace MauiApp3
             LoadUsersFromFile();
         }
 
-        //Uncomment the method below when you run this for the first time
-        //public static void DeleteUsersFile()
-        //{
-        //    try
-        //    {
-        //        if (File.Exists(usersFilePath))
-        //        {
-        //            File.Delete(usersFilePath);
-        //        }
-        //        else
-        //        {
-        //            System.Diagnostics.Debug.WriteLine($"[UserService] File not found: {usersFilePath}");
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        System.Diagnostics.Debug.WriteLine($"[UserService] Could not delete file: {ex.Message}");
-        //    }
-        //}
-
-
         private static void LoadUsersFromFile()
         {
             try

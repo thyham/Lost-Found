@@ -5,7 +5,7 @@
         public LoginPage()
         {
             InitializeComponent();
-            var usersFilePath = Path.Combine(FileSystem.AppDataDirectory, "users.txt");
+            //var usersFilePath = Path.Combine(FileSystem.AppDataDirectory, "users.txt");
             //if (File.Exists(usersFilePath))
             //{
             //    File.Delete(usersFilePath);
@@ -96,7 +96,7 @@
             }
             else
             {
-                ShowError("Invalid username " + username + " or password " + password );
+                ShowError("Invalid username or password");
                 LoginButton.IsEnabled = true;
                 LoginButton.Text = "Login";
             }
@@ -107,9 +107,6 @@
             await Task.Delay(1000); // Simulate network delay
             var users = UserService.GetUsers();
             return users.Any(u => u.Username == username && u.Password == password);
-
-            //Replace return statement with this to show debug logs
-            //return UserService.ValidateUser(username, password);
         }
 
         private void ShowError(string message)
