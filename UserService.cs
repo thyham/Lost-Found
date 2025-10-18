@@ -8,7 +8,10 @@ namespace MauiApp3
         private static List<User> users = new List<User>();
         private static readonly string usersFilePath = Path.Combine(FileSystem.AppDataDirectory, "users.txt");
 
-        // Load users from file when the service is first used
+        // Hardcoded staff credentials
+        private const string STAFF_USERNAME = "staff";
+        private const string STAFF_PASSWORD = "staff123";
+
         static UserService()
         {
             LoadUsersFromFile();
@@ -45,11 +48,7 @@ namespace MauiApp3
                                     : DateTime.Now
                             };
                             users.Add(user);
-                            System.Diagnostics.Debug.WriteLine($"[UserService] Loaded user: {user.Username}, Role: {user.Role}, Password: {user.Password}");
-                        }
-                        else
-                        {
-                            System.Diagnostics.Debug.WriteLine($"[UserService] Skipping invalid line: {line}");
+                            System.Diagnostics.Debug.WriteLine($"[UserService] Loaded user: {user.Username}, Role: {user.Role}");
                         }
                     }
                 }
@@ -57,10 +56,8 @@ namespace MauiApp3
                 {
                     System.Diagnostics.Debug.WriteLine("[UserService] No existing users file found. Creating default users...");
 
-                    // Create default users if file doesn't exist
-                    users.Add(new User { Id = 1, Username = "admin", Email = "admin@example.com", Password = "admin123", Role = "Staff" });
-                    users.Add(new User { Id = 2, Username = "staff", Email = "staff@example.com", Password = "staff123", Role = "Staff" });
-                    users.Add(new User { Id = 3, Username = "demo", Email = "demo@example.com", Password = "demo123", Role = "Student" });
+                    // Create default demo student user
+                    users.Add(new User { Id = 1, Username = "demo", Email = "demo@example.com", Password = "demo123", Role = "Student" });
                     SaveUsersToFile();
 
                     System.Diagnostics.Debug.WriteLine("[UserService] Default users created and saved.");
@@ -71,10 +68,7 @@ namespace MauiApp3
                 System.Diagnostics.Debug.WriteLine($"[UserService] Error loading users: {ex.Message}");
                 System.Diagnostics.Debug.WriteLine("[UserService] Using default fallback users.");
 
-                // If loading fails, use default users
-                users.Add(new User { Id = 1, Username = "admin", Email = "admin@example.com", Password = "admin123", Role = "Staff" });
-                users.Add(new User { Id = 2, Username = "staff", Email = "staff@example.com", Password = "staff123", Role = "Staff" });
-                users.Add(new User { Id = 3, Username = "demo", Email = "demo@example.com", Password = "demo123", Role = "Student" });
+                users.Add(new User { Id = 1, Username = "demo", Email = "demo@example.com", Password = "demo123", Role = "Student" });
             }
         }
 
@@ -99,12 +93,25 @@ namespace MauiApp3
 
         public static bool UserExists(string username)
         {
+            // Check if trying to register as staff
+            if (username.Equals(STAFF_USERNAME, StringComparison.OrdinalIgnoreCase))
+            {
+                return true; // Staff username is reserved
+            }
             return users.Any(u => u.Username.Equals(username, StringComparison.OrdinalIgnoreCase));
         }
 
         public static void AddUser(User user)
         {
+            // Prevent anyone from creating a staff account
+            if (user.Username.Equals(STAFF_USERNAME, StringComparison.OrdinalIgnoreCase))
+            {
+                System.Diagnostics.Debug.WriteLine("[UserService] Attempted to create reserved staff username - blocked");
+                return;
+            }
+
             user.Id = users.Count > 0 ? users.Max(u => u.Id) + 1 : 1;
+            user.Role = "Student"; // Force all new users to be students
             users.Add(user);
             SaveUsersToFile();
             System.Diagnostics.Debug.WriteLine($"[UserService] Added new user: {user.Username}, Role: {user.Role}");
@@ -112,6 +119,20 @@ namespace MauiApp3
 
         public static User GetUser(string username)
         {
+            // Check if this is staff login
+            if (username.Equals(STAFF_USERNAME, StringComparison.OrdinalIgnoreCase))
+            {
+                // Return a virtual staff user
+                return new User
+                {
+                    Id = 0,
+                    Username = STAFF_USERNAME,
+                    Email = "staff@lostandfound.com",
+                    Password = STAFF_PASSWORD,
+                    Role = "Staff"
+                };
+            }
+
             var user = users.FirstOrDefault(u => u.Username.Equals(username, StringComparison.OrdinalIgnoreCase));
             System.Diagnostics.Debug.WriteLine($"[UserService] GetUser called for: {username}. Found: {user != null}");
             return user;
@@ -121,13 +142,16 @@ namespace MauiApp3
         {
             System.Diagnostics.Debug.WriteLine("=== [UserService] Checking Credentials ===");
             System.Diagnostics.Debug.WriteLine($"Entered Username: {username}");
-            System.Diagnostics.Debug.WriteLine($"Entered Password: {password}");
 
-            foreach (var user in users)
+            // Check if this is staff login
+            if (username.Equals(STAFF_USERNAME, StringComparison.OrdinalIgnoreCase))
             {
-                System.Diagnostics.Debug.WriteLine($"Stored User -> Username: {user.Username}, Password: {user.Password}, Role: {user.Role}");
+                bool isValid = password == STAFF_PASSWORD;
+                System.Diagnostics.Debug.WriteLine($"Staff login attempt - Valid: {isValid}");
+                return isValid;
             }
 
+            // Check student users
             bool result = users.Any(u =>
                 u.Username.Equals(username, StringComparison.OrdinalIgnoreCase) &&
                 u.Password == password);
@@ -136,10 +160,15 @@ namespace MauiApp3
             return result;
         }
 
-        // New method to check if user is staff
         public static bool IsStaff(string username)
         {
-            var user = GetUser(username);
+            // Check if this is the hardcoded staff account
+            if (username.Equals(STAFF_USERNAME, StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
+
+            var user = users.FirstOrDefault(u => u.Username.Equals(username, StringComparison.OrdinalIgnoreCase));
             bool isStaff = user?.Role == "Staff";
             System.Diagnostics.Debug.WriteLine($"[UserService] IsStaff('{username}') -> {isStaff}");
             return isStaff;

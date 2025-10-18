@@ -13,9 +13,9 @@ namespace MauiApp3
             viewModel = ViewModelLocator.FormVM;
             BindingContext = viewModel;
 
-            // Default view: show all requested forms
-            viewModel.FilterRequestedForms();
-            FormsList.ItemsSource = viewModel.RequestedForms;
+            // Default view: show all forms
+            activeButton = AllFormsTabButton;
+            ShowAllForms();
         }
 
         protected override void OnAppearing()
@@ -25,7 +25,16 @@ namespace MauiApp3
             viewModel.RefreshFromService();
 
             // Re-apply the current filter
-            if (activeButton == ApprovedFormsTabButton)
+            if (activeButton == AllFormsTabButton)
+            {
+                ShowAllForms();
+            }
+            else if (activeButton == PendingFormsTabButton)
+            {
+                viewModel.FilterRequestedForms();
+                FormsList.ItemsSource = viewModel.RequestedForms;
+            }
+            else if (activeButton == ApprovedFormsTabButton)
             {
                 viewModel.FilterApprovedForms();
                 FormsList.ItemsSource = viewModel.ApprovedForms;
@@ -34,11 +43,6 @@ namespace MauiApp3
             {
                 viewModel.FilterRejectedForms();
                 FormsList.ItemsSource = viewModel.RejectedForms;
-            }
-            else
-            {
-                viewModel.FilterRequestedForms();
-                FormsList.ItemsSource = viewModel.RequestedForms;
             }
         }
 
@@ -59,6 +63,16 @@ namespace MauiApp3
             }
         }
 
+        private void OnAllFormsTabClicked(object sender, EventArgs e)
+        {
+            HandleTabButtonClick(AllFormsTabButton, "All");
+        }
+
+        private void OnPendingFormsTabClicked(object sender, EventArgs e)
+        {
+            HandleTabButtonClick(PendingFormsTabButton, "Pending");
+        }
+
         private void OnApprovedFormsTabClicked(object sender, EventArgs e)
         {
             HandleTabButtonClick(ApprovedFormsTabButton, "Approved");
@@ -71,23 +85,28 @@ namespace MauiApp3
 
         private void HandleTabButtonClick(Button clickedButton, string filterType)
         {
-            // If clicking the same active button again, unselect and go back to RequestedForms
+            // If clicking the same active button, do nothing
             if (activeButton == clickedButton)
             {
-                ResetButtons();
-                viewModel.FilterRequestedForms();
-                FormsList.ItemsSource = viewModel.RequestedForms;
-                activeButton = null;
                 return;
             }
 
-            // Set new active button (highlight) and reset the other
+            // Set new active button (highlight)
             SetActiveButton(clickedButton);
             activeButton = clickedButton;
 
             // Filter and update based on the selected tab
             switch (filterType)
             {
+                case "All":
+                    ShowAllForms();
+                    break;
+
+                case "Pending":
+                    viewModel.FilterRequestedForms();
+                    FormsList.ItemsSource = viewModel.RequestedForms;
+                    break;
+
                 case "Approved":
                     viewModel.FilterApprovedForms();
                     FormsList.ItemsSource = viewModel.ApprovedForms;
@@ -100,20 +119,29 @@ namespace MauiApp3
             }
         }
 
+        private void ShowAllForms()
+        {
+            // Filter all forms for current student
+            var currentId = Preferences.Get("CurrentId", -1);
+            var allUserForms = viewModel.FormsCollection
+                .Where(form => form.studentId == currentId)
+                .ToList();
+
+            // Create a temporary observable collection
+            var tempCollection = new ObservableCollection<Form>(allUserForms);
+            FormsList.ItemsSource = tempCollection;
+        }
+
         private void SetActiveButton(Button active)
         {
             // Reset all button colors
+            AllFormsTabButton.BackgroundColor = Color.FromArgb("#6C757D");
+            PendingFormsTabButton.BackgroundColor = Color.FromArgb("#6C757D");
             ApprovedFormsTabButton.BackgroundColor = Color.FromArgb("#6C757D");
             RejectedFormsTabButton.BackgroundColor = Color.FromArgb("#6C757D");
 
             // Highlight active one
             active.BackgroundColor = Color.FromArgb("#007BFF");
-        }
-
-        private void ResetButtons()
-        {
-            ApprovedFormsTabButton.BackgroundColor = Color.FromArgb("#6C757D");
-            RejectedFormsTabButton.BackgroundColor = Color.FromArgb("#6C757D");
         }
     }
 }

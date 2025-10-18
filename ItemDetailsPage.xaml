@@ -13,10 +13,6 @@
                    HorizontalOptions="Center"
                    Margin="0,0,0,10"/>
 
-            <Image Source="iphonecharger.jpg"
-                   HeightRequest="200"
-                   Aspect="AspectFit"/>
-
             <Border Stroke="#E0E0E0" StrokeThickness="2" Padding="15" BackgroundColor="White">
                 <Border.StrokeShape>
                     <RoundRectangle CornerRadius="10"/>
