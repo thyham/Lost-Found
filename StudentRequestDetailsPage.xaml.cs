@@ -31,9 +31,11 @@ namespace MauiApp3
 
                 if (confirm)
                 {
-                    selectedForm.Status = "Pending";
+                    FormService.DeleteForm(selectedForm.formId);
+                    viewModel.RefreshFromService();
                     viewModel.FilterRequestedForms();
                     await DisplayAlert("Cancelled", "Request has been cancelled", "OK");
+                    await Navigation.PopAsync();
                 }
             }
         }
