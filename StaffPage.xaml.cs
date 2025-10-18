@@ -12,14 +12,21 @@
             itemsViewModel = ViewModelLocator.ItemsVM;
             formViewModel = ViewModelLocator.FormVM;
 
-           
             ItemsCollectionView.BindingContext = itemsViewModel;
             RequestsCollectionView.BindingContext = formViewModel;
 
-            formViewModel.FilterRequestedForms();
+            formViewModel.StaffFilterRequestedForms();
         }
 
-       
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            // Refresh data when page appears
+            itemsViewModel.RefreshFromService();
+            formViewModel.RefreshFromService();
+            formViewModel.StaffFilterRequestedForms();
+        }
+
         private void OnItemsTabClicked(object sender, EventArgs e)
         {
             ItemsSection.IsVisible = true;
@@ -37,7 +44,7 @@
             ItemsTabButton.BackgroundColor = Color.FromArgb("#6C757D");
             RequestsTabButton.BackgroundColor = Color.FromArgb("#007AFF");
 
-            formViewModel.StaffFilterRequestedForms(); //staff lists all requested forms, student lists all requested forms linked to student ID
+            formViewModel.StaffFilterRequestedForms();
         }
 
         // Item Management
@@ -68,7 +75,8 @@
 
                 if (confirm)
                 {
-                    itemsViewModel.ItemsCollection.Remove(selectedItem);
+                    ItemService.DeleteItem(selectedItem.Id);
+                    itemsViewModel.RefreshFromService();
                     await DisplayAlert("Success", "Item deleted successfully", "OK");
                 }
             }
@@ -98,7 +106,9 @@
                 if (confirm)
                 {
                     selectedForm.Status = "Approved";
-                    formViewModel.FilterRequestedForms();
+                    FormService.UpdateForm(selectedForm);
+                    formViewModel.RefreshFromService();
+                    formViewModel.StaffFilterRequestedForms();
                     await DisplayAlert("Success", "Request approved!", "OK");
                 }
             }
@@ -118,7 +128,9 @@
                 if (confirm)
                 {
                     selectedForm.Status = "Rejected";
-                    formViewModel.FilterRequestedForms();
+                    FormService.UpdateForm(selectedForm);
+                    formViewModel.RefreshFromService();
+                    formViewModel.StaffFilterRequestedForms();
                     await DisplayAlert("Rejected", "Request has been rejected", "OK");
                 }
             }

@@ -5,7 +5,7 @@ namespace MauiApp3
     public partial class MyItems : ContentPage
     {
         private FormViewModel viewModel;
-        private Button? activeButton = null; // Tracks which tab is currently active
+        private Button? activeButton = null;
 
         public MyItems()
         {
@@ -16,6 +16,30 @@ namespace MauiApp3
             // Default view: show all requested forms
             viewModel.FilterRequestedForms();
             FormsList.ItemsSource = viewModel.RequestedForms;
+        }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            // Refresh data when page appears to show staff responses
+            viewModel.RefreshFromService();
+
+            // Re-apply the current filter
+            if (activeButton == ApprovedFormsTabButton)
+            {
+                viewModel.FilterApprovedForms();
+                FormsList.ItemsSource = viewModel.ApprovedForms;
+            }
+            else if (activeButton == RejectedFormsTabButton)
+            {
+                viewModel.FilterRejectedForms();
+                FormsList.ItemsSource = viewModel.RejectedForms;
+            }
+            else
+            {
+                viewModel.FilterRequestedForms();
+                FormsList.ItemsSource = viewModel.RequestedForms;
+            }
         }
 
         private async void OnViewRequestDetailsClicked(object sender, EventArgs e)
@@ -91,6 +115,5 @@ namespace MauiApp3
             ApprovedFormsTabButton.BackgroundColor = Color.FromArgb("#6C757D");
             RejectedFormsTabButton.BackgroundColor = Color.FromArgb("#6C757D");
         }
-
     }
 }

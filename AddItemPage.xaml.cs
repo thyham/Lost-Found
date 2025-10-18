@@ -39,13 +39,8 @@
             }
 
             // Create new item
-            int newId = _itemsViewModel.ItemsCollection.Count > 0
-                ? _itemsViewModel.ItemsCollection.Max(i => i.Id) + 1
-                : 1;
-
             var newItem = new Item
             {
-                Id = newId,
                 Name = name,
                 Category = category,
                 Location = location,
@@ -54,7 +49,9 @@
                 Status = "Pending"
             };
 
-            _itemsViewModel.ItemsCollection.Add(newItem);
+            // Save to service and refresh viewmodel
+            ItemService.AddItem(newItem);
+            _itemsViewModel.RefreshFromService();
 
             await DisplayAlert("Success", $"'{name}' has been added to lost items", "OK");
             await Navigation.PopAsync();

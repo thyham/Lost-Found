@@ -1,4 +1,3 @@
-
 namespace MauiApp3
 {
     public partial class NewPage2 : ContentPage
@@ -6,17 +5,16 @@ namespace MauiApp3
         private FormViewModel formViewModel = ViewModelLocator.FormVM;
         private Item _item;
 
-        private int _loggedInStudentId = 1234;
-
         public Item ItemPass
         {
             get => _item;
             set
             {
                 _item = value;
-                BindingContext = _item; // Bind the current item
+                BindingContext = _item;
             }
         }
+
         public NewPage2()
         {
             InitializeComponent();
@@ -33,19 +31,19 @@ namespace MauiApp3
         }
 
         public string ItemName => _item.Name;
-        private void OnSubmitClicked(object sender, EventArgs e)
+
+        private async void OnSubmitClicked(object sender, EventArgs e)
         {
             var reasonText = DescriptionEditor.Text;
 
             if (string.IsNullOrWhiteSpace(reasonText))
             {
-                DisplayAlert("Error", "Please enter a description before submitting.", "OK");
+                await DisplayAlert("Error", "Please enter a description before submitting.", "OK");
                 return;
             }
 
             var newForm = new Form
             {
-                formId = formViewModel.FormsCollection.Count + 1,
                 studentId = Preferences.Get("CurrentId", -1),
                 itemId = _item.Id,
                 itemName = _item.Name,
@@ -53,11 +51,13 @@ namespace MauiApp3
                 Status = "Pending"
             };
 
-            formViewModel.FormsCollection.Add(newForm);
+            // Save to service and refresh viewmodel
+            FormService.AddForm(newForm);
+            formViewModel.RefreshFromService();
             formViewModel.FilterRequestedForms();
 
-            DisplayAlert("Submitted", "Your claim request has been submitted!", "OK");
-            Navigation.PopAsync();
+            await DisplayAlert("Submitted", "Your claim request has been submitted and sent to staff!", "OK");
+            await Navigation.PopAsync();
         }
     }
 }
