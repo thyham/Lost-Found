@@ -10,6 +10,7 @@
         protected override Window CreateWindow(IActivationState? activationState)
         {
             var window = new Window(new AppShell());
+            //UserService.DeleteUsersFile();
 
             // Check login status BEFORE showing Shell UI
             if (!Preferences.Get("IsLoggedIn", false))

@@ -5,7 +5,7 @@
         public LoginPage()
         {
             InitializeComponent();
-            var usersFilePath = Path.Combine(FileSystem.AppDataDirectory, "users.txt");
+            //var usersFilePath = Path.Combine(FileSystem.AppDataDirectory, "users.txt");
             //if (File.Exists(usersFilePath))
             //{
             //    File.Delete(usersFilePath);
@@ -61,6 +61,7 @@
 
             if (isAuthenticated)
             {
+                var user = UserService.GetUser(username);
                 // Save Remember Me preferences
                 if (RememberMeCheckBox.IsChecked)
                 {
@@ -74,9 +75,9 @@
                     Preferences.Remove("SavedUsername");
                     Preferences.Remove("SavedPassword");
                 }
-
                 // Save login status and current user
                 Preferences.Set("IsLoggedIn", true);
+                Preferences.Set("CurrentId", user.Id);
                 Preferences.Set("CurrentUser", username);
 
                 // Check if user is staff or student

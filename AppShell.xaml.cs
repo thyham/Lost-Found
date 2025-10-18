@@ -19,6 +19,7 @@ namespace MauiApp3
             Routing.RegisterRoute(nameof(AddItemPage), typeof(AddItemPage));
             Routing.RegisterRoute(nameof(ItemDetailsPage), typeof(ItemDetailsPage));
             Routing.RegisterRoute(nameof(RequestDetailsPage), typeof(RequestDetailsPage));
+            Routing.RegisterRoute(nameof(StudentRequestDetailsPage), typeof(StudentRequestDetailsPage));
 
             Navigated += OnShellNavigated;
             Loaded += AppShell_Loaded;

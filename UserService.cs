@@ -18,45 +18,63 @@ namespace MauiApp3
         {
             try
             {
+                System.Diagnostics.Debug.WriteLine($"[UserService] Loading users from file: {usersFilePath}");
+
                 if (File.Exists(usersFilePath))
                 {
                     var lines = File.ReadAllLines(usersFilePath);
+                    System.Diagnostics.Debug.WriteLine($"[UserService] Found {lines.Length} lines in users file");
+
                     foreach (var line in lines)
                     {
                         if (string.IsNullOrWhiteSpace(line))
                             continue;
 
                         var parts = line.Split('|');
-                        if (parts.Length >= 3)
+                        if (parts.Length >= 4)
                         {
-                            users.Add(new User
+                            var user = new User
                             {
-                                Username = parts[0],
-                                Email = parts[1],
-                                Password = parts[2],
-                                Role = parts.Length > 3 ? parts[3] : "Student",
-                                CreatedDate = parts.Length > 4 && DateTime.TryParse(parts[4], out var date)
+                                Id = int.TryParse(parts[0], out var id) ? id : users.Count + 1,
+                                Username = parts[1],
+                                Email = parts[2],
+                                Password = parts[3],
+                                Role = parts.Length > 4 ? parts[4] : "Student",
+                                CreatedDate = parts.Length > 5 && DateTime.TryParse(parts[5], out var date)
                                     ? date
                                     : DateTime.Now
-                            });
+                            };
+                            users.Add(user);
+                            System.Diagnostics.Debug.WriteLine($"[UserService] Loaded user: {user.Username}, Role: {user.Role}, Password: {user.Password}");
+                        }
+                        else
+                        {
+                            System.Diagnostics.Debug.WriteLine($"[UserService] Skipping invalid line: {line}");
                         }
                     }
                 }
                 else
                 {
+                    System.Diagnostics.Debug.WriteLine("[UserService] No existing users file found. Creating default users...");
+
                     // Create default users if file doesn't exist
-                    users.Add(new User { Username = "admin", Email = "admin@example.com", Password = "admin123", Role = "Staff" });
-                    users.Add(new User { Username = "staff", Email = "staff@example.com", Password = "staff123", Role = "Staff" });
-                    users.Add(new User { Username = "demo", Email = "demo@example.com", Password = "demo123", Role = "Student" });
+                    users.Add(new User { Id = 1, Username = "admin", Email = "admin@example.com", Password = "admin123", Role = "Staff" });
+                    users.Add(new User { Id = 2, Username = "staff", Email = "staff@example.com", Password = "staff123", Role = "Staff" });
+                    users.Add(new User { Id = 3, Username = "demo", Email = "demo@example.com", Password = "demo123", Role = "Student" });
                     SaveUsersToFile();
+
+                    System.Diagnostics.Debug.WriteLine("[UserService] Default users created and saved.");
                 }
             }
             catch (Exception ex)
             {
+                System.Diagnostics.Debug.WriteLine($"[UserService] Error loading users: {ex.Message}");
+                System.Diagnostics.Debug.WriteLine("[UserService] Using default fallback users.");
+
                 // If loading fails, use default users
-                users.Add(new User { Username = "admin", Email = "admin@example.com", Password = "admin123", Role = "Staff" });
-                users.Add(new User { Username = "staff", Email = "staff@example.com", Password = "staff123", Role = "Staff" });
-                users.Add(new User { Username = "demo", Email = "demo@example.com", Password = "demo123", Role = "Student" });
+                users.Add(new User { Id = 1, Username = "admin", Email = "admin@example.com", Password = "admin123", Role = "Staff" });
+                users.Add(new User { Id = 2, Username = "staff", Email = "staff@example.com", Password = "staff123", Role = "Staff" });
+                users.Add(new User { Id = 3, Username = "demo", Email = "demo@example.com", Password = "demo123", Role = "Student" });
             }
         }
 
@@ -64,12 +82,13 @@ namespace MauiApp3
         {
             try
             {
-                var lines = users.Select(u => $"{u.Username}|{u.Email}|{u.Password}|{u.Role}|{u.CreatedDate:O}");
+                var lines = users.Select(u => $"{u.Id}|{u.Username}|{u.Email}|{u.Password}|{u.Role}|{u.CreatedDate:O}");
                 File.WriteAllLines(usersFilePath, lines);
+                System.Diagnostics.Debug.WriteLine($"[UserService] Saved {users.Count} users to {usersFilePath}");
             }
             catch (Exception ex)
             {
-                // Log error if needed
+                System.Diagnostics.Debug.WriteLine($"[UserService] Error saving users: {ex.Message}");
             }
         }
 
@@ -85,27 +104,45 @@ namespace MauiApp3
 
         public static void AddUser(User user)
         {
+            user.Id = users.Count > 0 ? users.Max(u => u.Id) + 1 : 1;
             users.Add(user);
             SaveUsersToFile();
+            System.Diagnostics.Debug.WriteLine($"[UserService] Added new user: {user.Username}, Role: {user.Role}");
         }
 
         public static User GetUser(string username)
         {
-            return users.FirstOrDefault(u => u.Username.Equals(username, StringComparison.OrdinalIgnoreCase));
+            var user = users.FirstOrDefault(u => u.Username.Equals(username, StringComparison.OrdinalIgnoreCase));
+            System.Diagnostics.Debug.WriteLine($"[UserService] GetUser called for: {username}. Found: {user != null}");
+            return user;
         }
 
         public static bool ValidateUser(string username, string password)
         {
-            return users.Any(u =>
+            System.Diagnostics.Debug.WriteLine("=== [UserService] Checking Credentials ===");
+            System.Diagnostics.Debug.WriteLine($"Entered Username: {username}");
+            System.Diagnostics.Debug.WriteLine($"Entered Password: {password}");
+
+            foreach (var user in users)
+            {
+                System.Diagnostics.Debug.WriteLine($"Stored User -> Username: {user.Username}, Password: {user.Password}, Role: {user.Role}");
+            }
+
+            bool result = users.Any(u =>
                 u.Username.Equals(username, StringComparison.OrdinalIgnoreCase) &&
                 u.Password == password);
+
+            System.Diagnostics.Debug.WriteLine($"Authentication Result: {result}");
+            return result;
         }
 
         // New method to check if user is staff
         public static bool IsStaff(string username)
         {
             var user = GetUser(username);
-            return user?.Role == "Staff";
+            bool isStaff = user?.Role == "Staff";
+            System.Diagnostics.Debug.WriteLine($"[UserService] IsStaff('{username}') -> {isStaff}");
+            return isStaff;
         }
     }
 }

@@ -29,6 +29,7 @@ namespace MauiApp3
             // Always fetch the latest selected item
             _item = ViewModelLocator.SelectedItem;
             BindingContext = _item;
+            StudentIdEntry.Text = Preferences.Get("CurrentId", -1).ToString();
         }
 
         public string ItemName => _item.Name;
@@ -45,7 +46,7 @@ namespace MauiApp3
             var newForm = new Form
             {
                 formId = formViewModel.FormsCollection.Count + 1,
-                studentId = _loggedInStudentId,
+                studentId = Preferences.Get("CurrentId", -1),
                 itemId = _item.Id,
                 itemName = _item.Name,
                 Notes = reasonText,

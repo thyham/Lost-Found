@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiApp3.StudentRequestDetailsPage"
+             Title="Student Request Details">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="20">
+
+            <Label Text="Claim Request Details"
+                   FontSize="24"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"
+                   Margin="0,0,0,10"/>
+
+            <Image Source="iphonecharger.jpg"
+                   HeightRequest="200"
+                   Aspect="AspectFit"/>
+
+            <Border Stroke="#FFC107" StrokeThickness="2" Padding="15" BackgroundColor="White">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="10"/>
+                </Border.StrokeShape>
+                <VerticalStackLayout Spacing="15">
+
+                    <StackLayout>
+                        <Label Text="Request ID:" FontAttributes="Bold" FontSize="16"/>
+                        <Label Text="{Binding formId}" FontSize="18" TextColor="DarkSlateGray"/>
+                    </StackLayout>
+
+                    <StackLayout>
+                        <Label Text="Item Name:" FontAttributes="Bold" FontSize="16"/>
+                        <Label Text="{Binding itemName}" FontSize="18" TextColor="DarkSlateGray"/>
+                    </StackLayout>
+
+                    <StackLayout>
+                        <Label Text="Item ID:" FontAttributes="Bold" FontSize="16"/>
+                        <Label Text="{Binding itemId}" FontSize="18" TextColor="DarkSlateGray"/>
+                    </StackLayout>
+
+                    <StackLayout>
+                        <Label Text="Student ID:" FontAttributes="Bold" FontSize="16"/>
+                        <Label Text="{Binding studentId}" FontSize="18" TextColor="DarkSlateGray"/>
+                    </StackLayout>
+
+                    <StackLayout>
+                        <Label Text="Additional Information:" FontAttributes="Bold" FontSize="16"/>
+                        <Label Text="{Binding Notes}" FontSize="18" TextColor="DarkSlateGray"/>
+                    </StackLayout>
+
+                    <StackLayout>
+                        <Label Text="Status:" FontAttributes="Bold" FontSize="16"/>
+                        <Label Text="{Binding Status}" FontSize="18" FontAttributes="Bold" TextColor="#FFC107"/>
+                    </StackLayout>
+
+                </VerticalStackLayout>
+            </Border>
+
+            <Button Text="Cancel Request"
+                    FontSize="16"
+                    BackgroundColor="#DC3545"
+                    TextColor="White"
+                    HeightRequest="50"
+                    Clicked="OnCancelRequestClicked"/>
+
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>
