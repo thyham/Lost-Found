@@ -12,54 +12,68 @@
                    HorizontalOptions="Center"
                    Margin="0,10" />
 
-            <Image Source="iphonecharger.jpg"
-                   HeightRequest="185"
-                   Aspect="AspectFit"/>
+            <Border Stroke="#E0E0E0" 
+                    StrokeThickness="2" 
+                    Padding="20" 
+                    BackgroundColor="White">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="10"/>
+                </Border.StrokeShape>
 
-            <StackLayout>
-                <Label Text="Date:" 
-                       FontAttributes="Bold" 
-                       FontSize="18"/>
-                <Label Text="{Binding Date}" 
-                       FontSize="16" 
-                       TextColor="DarkSlateGray"/>
-            </StackLayout>
+                <VerticalStackLayout Spacing="15">
 
+                    <StackLayout>
+                        <Label Text="Date Found:" 
+                               FontAttributes="Bold" 
+                               FontSize="18"/>
+                        <Label Text="{Binding Date}" 
+                               FontSize="16" 
+                               TextColor="DarkSlateGray"/>
+                    </StackLayout>
 
-            <StackLayout>
-                <Label Text="Category:" 
-                       FontAttributes="Bold" 
-                       FontSize="18"/>
-                <Label Text="{Binding Category}" 
-                       FontSize="16" 
-                       TextColor="DarkSlateGray"/>
-            </StackLayout>
+                    <StackLayout>
+                        <Label Text="Category:" 
+                               FontAttributes="Bold" 
+                               FontSize="18"/>
+                        <Label Text="{Binding Category}" 
+                               FontSize="16" 
+                               TextColor="DarkSlateGray"/>
+                    </StackLayout>
 
+                    <StackLayout>
+                        <Label Text="Location Found:" 
+                               FontAttributes="Bold" 
+                               FontSize="18"/>
+                        <Label Text="{Binding Location}" 
+                               FontSize="16" 
+                               TextColor="DarkSlateGray"/>
+                    </StackLayout>
 
-            <StackLayout>
-                <Label Text="Notes:" 
-                       FontAttributes="Bold" 
-                       FontSize="18"/>
-                <Label Text="{Binding Notes}" 
-                       FontSize="16" 
-                       TextColor="DarkSlateGray"/>
-            </StackLayout>
+                    <StackLayout>
+                        <Label Text="Description:" 
+                               FontAttributes="Bold" 
+                               FontSize="18"/>
+                        <Label Text="{Binding Notes}" 
+                               FontSize="16" 
+                               TextColor="DarkSlateGray"/>
+                    </StackLayout>
 
+                </VerticalStackLayout>
+            </Border>
 
-            <StackLayout>
-                <Label Text="Location:" 
-                       FontAttributes="Bold" 
-                       FontSize="18"/>
-                <Label Text="{Binding Location}" 
-                       FontSize="16" 
-                       TextColor="DarkSlateGray"/>
-            </StackLayout>
-
-            <Button Text="Request Claim"
+            <Button x:Name="RequestClaimButton"
+                    Text="Request Claim"
                     FontSize="15"
                     FontAttributes="Bold"
-                    Background="#2BA025"
+                    BackgroundColor="#2BA025"
                     Clicked="OnGoToRequestClicked" />
+
+            <Label x:Name="AlreadyRequestedLabel"
+                   Text="You have already submitted a request for this item"
+                   TextColor="Red"
+                   FontSize="14"
+                   IsVisible="False"
+                   HorizontalOptions="Center"/>
 
         </VerticalStackLayout>
     </ScrollView>

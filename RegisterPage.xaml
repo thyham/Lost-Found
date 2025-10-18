@@ -80,27 +80,6 @@
                     IsPassword="True"/>
             </Border>
 
-			<StackLayout>
-				<Label Text="Account Type:" FontAttributes="Bold" FontSize="16"/>
-				<Border
-                    Stroke="#E0E0E0"
-                    StrokeThickness="1"
-                    Background="White"
-                    Padding="10">
-					<Border.StrokeShape>
-						<RoundRectangle CornerRadius="8"/>
-					</Border.StrokeShape>
-					<Picker x:Name="RolePicker" SelectedIndex="0">
-						<Picker.ItemsSource>
-							<x:Array Type="{x:Type x:String}">
-								<x:String>Student</x:String>
-								<x:String>Staff</x:String>
-							</x:Array>
-						</Picker.ItemsSource>
-					</Picker>
-				</Border>
-			</StackLayout>
-
             <Label 
                 x:Name="MessageLabel"
                 Text=""
@@ -111,7 +90,7 @@
 
             <Button 
                 x:Name="RegisterButton"
-                Text="Register"
+                Text="Register as Student"
                 BackgroundColor="#007AFF"
                 TextColor="White"
                 FontAttributes="Bold"

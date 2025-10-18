@@ -10,7 +10,7 @@
 
         <VerticalStackLayout Grid.Row="0" Spacing="20">
 
-            <Label Text="Item Collection"
+            <Label Text="My Claim Requests"
                    FontAttributes="Bold"
                    FontSize="24"
                    HorizontalOptions="Center" />
@@ -19,7 +19,22 @@
                    FontSize="12"
                    FontAttributes="Bold"/>
 
-            <HorizontalStackLayout>
+            <HorizontalStackLayout Spacing="5">
+               <Button x:Name="AllFormsTabButton"
+                    Text="All"
+                    FontSize="12"
+                    BackgroundColor="#007BFF"
+                    FontAttributes="Bold"
+                    Clicked="OnAllFormsTabClicked" />
+                
+
+                <Button x:Name="PendingFormsTabButton"
+                    Text="Pending"
+                    FontSize="12"
+                    BackgroundColor="#6C757D"
+                    FontAttributes="Bold"
+                    Clicked="OnPendingFormsTabClicked" />
+
                 <Button x:Name="ApprovedFormsTabButton"
                     Text="Approved"
                     FontSize="12"
@@ -35,8 +50,6 @@
                     Clicked="OnRejectedFormsTabClicked" />
             </HorizontalStackLayout>
 
-
-
         </VerticalStackLayout>
 
         <Border Grid.Row="1"
@@ -45,8 +58,7 @@
                 Padding="10"
                 Margin="5">
 
-
-            <CollectionView x:Name="FormsList" ItemsSource="{Binding RequestedForms}">
+            <CollectionView x:Name="FormsList" ItemsSource="{Binding FormsCollection}">
 
                 <CollectionView.ItemsLayout>
                     <GridItemsLayout Orientation="Vertical" Span="2" />
@@ -62,27 +74,36 @@
 
                             <VerticalStackLayout Spacing="8" HorizontalOptions="Center">
 
-                                <Image Source="iphonecharger.jpg"
-                                       HeightRequest="100"
-                                       Aspect="AspectFit" />
-
                                 <Label Text="{Binding itemName}" 
                                        FontAttributes="Bold"
+                                       FontSize="16"
                                        HorizontalOptions="Center" />
 
                                 <Label Text="{Binding Notes}" 
-                                       FontAttributes="Bold"
+                                       FontSize="12"
                                        HorizontalOptions="Center" />
 
                                 <Label Text="{Binding Status}" 
                                        FontAttributes="Bold"
-                                       HorizontalOptions="Center" />
+                                       FontSize="14"
+                                       HorizontalOptions="Center">
+                                    <Label.Triggers>
+                                        <DataTrigger TargetType="Label" Binding="{Binding Status}" Value="Pending">
+                                            <Setter Property="TextColor" Value="#FFC107"/>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Label" Binding="{Binding Status}" Value="Approved">
+                                            <Setter Property="TextColor" Value="#28A745"/>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Label" Binding="{Binding Status}" Value="Rejected">
+                                            <Setter Property="TextColor" Value="#DC3545"/>
+                                        </DataTrigger>
+                                    </Label.Triggers>
+                                </Label>
 
                                 <Button Text="View Details"
-                                                    FontSize="12"
-                                                    BackgroundColor="#007AFF"
-                                                    Clicked="OnViewRequestDetailsClicked"/>
-
+                                        FontSize="12"
+                                        BackgroundColor="#007AFF"
+                                        Clicked="OnViewRequestDetailsClicked"/>
 
                             </VerticalStackLayout>
 

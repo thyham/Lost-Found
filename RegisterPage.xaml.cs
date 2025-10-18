@@ -1,5 +1,4 @@
-﻿
-namespace MauiApp3
+﻿namespace MauiApp3
 {
     public partial class RegisterPage : ContentPage
     {
@@ -14,8 +13,8 @@ namespace MauiApp3
             string email = EmailEntry.Text?.Trim();
             string password = PasswordEntry.Text;
             string confirmPassword = ConfirmPasswordEntry.Text;
-            string role = RolePicker.SelectedItem?.ToString() ?? "Student";
 
+            // Validation
             if (string.IsNullOrWhiteSpace(username))
             {
                 ShowError("Username is required");
@@ -25,6 +24,13 @@ namespace MauiApp3
             if (username.Length < 3)
             {
                 ShowError("Username must be at least 3 characters");
+                return;
+            }
+
+            // Check for reserved staff username
+            if (username.Equals("staff", StringComparison.OrdinalIgnoreCase))
+            {
+                ShowError("This username is reserved");
                 return;
             }
 
@@ -64,25 +70,28 @@ namespace MauiApp3
                 return;
             }
 
+            // Disable button and show loading state
             RegisterButton.IsEnabled = false;
             RegisterButton.Text = "Creating account...";
 
-            await Task.Delay(1000);
+            await Task.Delay(1000); // Simulate network delay
 
+            // Always create as Student (role is enforced in UserService.AddUser)
             var newUser = new User
             {
                 Username = username,
                 Email = email,
                 Password = password,
-                Role = role
+                Role = "Student"
             };
 
             UserService.AddUser(newUser);
 
-            ShowSuccess($"Account created successfully as {role}!");
+            ShowSuccess("Student account created successfully!");
 
             await Task.Delay(1500);
 
+            // Navigate back to login page
             await Navigation.PopAsync();
         }
 
