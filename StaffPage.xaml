@@ -16,11 +16,11 @@
                     Clicked="OnItemsTabClicked"
                     WidthRequest="150"/>
             <Button x:Name="RequestsTabButton"
-                    Text="Pending Requests"
+                    Text="Requests"
                     FontSize="16"
                     BackgroundColor="#6C757D"
                     Clicked="OnRequestsTabClicked"
-                    WidthRequest="180"/>
+                    WidthRequest="150"/>
         </HorizontalStackLayout>
 
         <!-- Content Area -->
@@ -56,19 +56,30 @@
                                         <RoundRectangle CornerRadius="10"/>
                                     </Border.StrokeShape>
 
-                                    <Grid ColumnDefinitions="*, Auto" RowDefinitions="Auto, Auto, Auto, Auto">
+                                    <Grid ColumnDefinitions="100, *" RowDefinitions="Auto, Auto, Auto, Auto" ColumnSpacing="10">
 
-                                        <Label Grid.Row="0" Grid.Column="0"
+                                        <!-- Image -->
+                                        <Image Grid.Row="0" Grid.RowSpan="3" Grid.Column="0"
+                                               Source="{Binding ImagePath}"
+                                               Aspect="AspectFill"
+                                               HeightRequest="80"
+                                               WidthRequest="80">
+                                            <Image.Clip>
+                                                <RoundRectangleGeometry CornerRadius="8" Rect="0,0,80,80"/>
+                                            </Image.Clip>
+                                        </Image>
+
+                                        <Label Grid.Row="0" Grid.Column="1"
                                                Text="{Binding Name}"
                                                FontSize="18"
                                                FontAttributes="Bold"/>
 
-                                        <Label Grid.Row="1" Grid.Column="0"
+                                        <Label Grid.Row="1" Grid.Column="1"
                                                Text="{Binding Category}"
                                                TextColor="Gray"
                                                FontSize="14"/>
 
-                                        <Label Grid.Row="2" Grid.Column="0"
+                                        <Label Grid.Row="2" Grid.Column="1"
                                                Text="{Binding Location}"
                                                FontSize="12"
                                                TextColor="DarkSlateGray"/>
@@ -92,23 +103,80 @@
                     </CollectionView>
                 </VerticalStackLayout>
 
-                <!-- Pending Requests Section (visible when Requests tab is active) -->
+                <!-- Requests Section (visible when Requests tab is active) -->
                 <VerticalStackLayout x:Name="RequestsSection" IsVisible="False" Spacing="15">
 
-                    <Label Text="Pending Claim Requests"
+                    <Label Text="Claim Requests"
                            FontSize="20"
                            FontAttributes="Bold"
                            HorizontalOptions="Center"/>
 
+                    <!-- Request Filter Tabs -->
+                    <HorizontalStackLayout Spacing="10" HorizontalOptions="Center">
+                        <Button x:Name="AllRequestsButton"
+                                Text="All"
+                                FontSize="14"
+                                BackgroundColor="#007AFF"
+                                WidthRequest="80"
+                                Clicked="OnAllRequestsClicked"/>
+                        <Button x:Name="PendingRequestsButton"
+                                Text="Pending"
+                                FontSize="14"
+                                BackgroundColor="#6C757D"
+                                WidthRequest="100"
+                                Clicked="OnPendingRequestsClicked"/>
+                        <Button x:Name="AcceptedRequestsButton"
+                                Text="Accepted"
+                                FontSize="14"
+                                BackgroundColor="#6C757D"
+                                WidthRequest="100"
+                                Clicked="OnAcceptedRequestsClicked"/>
+                        <Button x:Name="RejectedRequestsButton"
+                                Text="Rejected"
+                                FontSize="14"
+                                BackgroundColor="#6C757D"
+                                WidthRequest="100"
+                                Clicked="OnRejectedRequestsClicked"/>
+                    </HorizontalStackLayout>
+
+                    <!-- Empty State Message -->
+                    <Label x:Name="NoRequestsLabel"
+                           Text="No pending requests"
+                           FontSize="16"
+                           TextColor="Gray"
+                           HorizontalOptions="Center"
+                           Margin="0,40,0,0"
+                           IsVisible="False"/>
+
                     <CollectionView x:Name="RequestsCollectionView"
                                     ItemsSource="{Binding RequestedForms}">
+                        <CollectionView.EmptyView>
+                            <ContentView>
+                                <Label Text="No requests found"
+                                       FontSize="16"
+                                       TextColor="Gray"
+                                       HorizontalOptions="Center"
+                                       VerticalOptions="Center"
+                                       Margin="0,40,0,0"/>
+                            </ContentView>
+                        </CollectionView.EmptyView>
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
-                                <Border Stroke="#FFC107"
-                                        StrokeThickness="2"
+                                <Border StrokeThickness="2"
                                         BackgroundColor="White"
                                         Padding="15"
                                         Margin="5">
+                                    <Border.Triggers>
+                                        <DataTrigger TargetType="Border" Binding="{Binding Status}" Value="Pending">
+                                            <Setter Property="Stroke" Value="#FFC107"/>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Border" Binding="{Binding Status}" Value="Approved">
+                                            <Setter Property="Stroke" Value="#28A745"/>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Border" Binding="{Binding Status}" Value="Rejected">
+                                            <Setter Property="Stroke" Value="#DC3545"/>
+                                        </DataTrigger>
+                                    </Border.Triggers>
                                     <Border.StrokeShape>
                                         <RoundRectangle CornerRadius="10"/>
                                     </Border.StrokeShape>
@@ -132,11 +200,24 @@
                                                Margin="0,5,0,0"/>
 
                                         <Label Grid.Row="3"
-                                               Text="{Binding Status}"
-                                               FontSize="12"
+                                               FontSize="14"
                                                FontAttributes="Bold"
-                                               TextColor="#FFC107"
-                                               Margin="0,5,0,0"/>
+                                               Margin="0,5,0,0">
+                                            <Label.Text>
+                                                <Binding Path="Status" StringFormat="Status: {0}"/>
+                                            </Label.Text>
+                                            <Label.Triggers>
+                                                <DataTrigger TargetType="Label" Binding="{Binding Status}" Value="Pending">
+                                                    <Setter Property="TextColor" Value="#FFC107"/>
+                                                </DataTrigger>
+                                                <DataTrigger TargetType="Label" Binding="{Binding Status}" Value="Approved">
+                                                    <Setter Property="TextColor" Value="#28A745"/>
+                                                </DataTrigger>
+                                                <DataTrigger TargetType="Label" Binding="{Binding Status}" Value="Rejected">
+                                                    <Setter Property="TextColor" Value="#DC3545"/>
+                                                </DataTrigger>
+                                            </Label.Triggers>
+                                        </Label>
 
                                         <HorizontalStackLayout Grid.Row="4" 
                                                              Spacing="10" 
@@ -148,11 +229,29 @@
                                             <Button Text="Accept"
                                                     FontSize="12"
                                                     BackgroundColor="#28A745"
-                                                    Clicked="OnAcceptRequestClicked"/>
+                                                    Clicked="OnAcceptRequestClicked">
+                                                <Button.Triggers>
+                                                    <DataTrigger TargetType="Button" Binding="{Binding Status}" Value="Approved">
+                                                        <Setter Property="IsVisible" Value="False"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger TargetType="Button" Binding="{Binding Status}" Value="Rejected">
+                                                        <Setter Property="IsVisible" Value="False"/>
+                                                    </DataTrigger>
+                                                </Button.Triggers>
+                                            </Button>
                                             <Button Text="Reject"
                                                     FontSize="12"
                                                     BackgroundColor="#DC3545"
-                                                    Clicked="OnRejectRequestClicked"/>
+                                                    Clicked="OnRejectRequestClicked">
+                                                <Button.Triggers>
+                                                    <DataTrigger TargetType="Button" Binding="{Binding Status}" Value="Approved">
+                                                        <Setter Property="IsVisible" Value="False"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger TargetType="Button" Binding="{Binding Status}" Value="Rejected">
+                                                        <Setter Property="IsVisible" Value="False"/>
+                                                    </DataTrigger>
+                                                </Button.Triggers>
+                                            </Button>
                                         </HorizontalStackLayout>
 
                                     </Grid>

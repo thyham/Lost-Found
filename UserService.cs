@@ -8,7 +8,7 @@ namespace MauiApp3
         private static List<User> users = new List<User>();
         private static readonly string usersFilePath = Path.Combine(FileSystem.AppDataDirectory, "users.txt");
 
-        // Hardcoded staff credentials
+  
         private const string STAFF_USERNAME = "staff";
         private const string STAFF_PASSWORD = "staff123";
 

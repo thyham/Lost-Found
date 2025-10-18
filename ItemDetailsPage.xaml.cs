@@ -8,9 +8,53 @@
         public ItemDetailsPage(Item item, ItemsViewModel itemsViewModel)
         {
             InitializeComponent();
-            _item = item;
+      
+            var freshItem = ItemService.GetItem(item.Id);
+            _item = freshItem ?? item;
+
             _itemsViewModel = itemsViewModel;
             BindingContext = _item;
+
+            LoadItemImage();
+        }
+
+        private void LoadItemImage()
+        {
+            try
+            {
+                if (_item != null)
+                {
+                    if (!string.IsNullOrEmpty(_item.ImagePath))
+                    {
+                        if (File.Exists(_item.ImagePath))
+                        {
+                            ItemImageDisplay.Source = ImageSource.FromFile(_item.ImagePath);
+                            ItemImageDisplay.IsVisible = true;
+                            NoImageLabel.IsVisible = false;
+                        }
+                        else
+                        {
+                            ItemImageDisplay.IsVisible = false;
+                            NoImageLabel.IsVisible = true;
+                        }
+                    }
+                    else
+                    {
+                        ItemImageDisplay.IsVisible = false;
+                        NoImageLabel.IsVisible = true;
+                    }
+                }
+                else
+                {
+                    ItemImageDisplay.IsVisible = false;
+                    NoImageLabel.IsVisible = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                ItemImageDisplay.IsVisible = false;
+                NoImageLabel.IsVisible = true;
+            }
         }
 
         private async void OnCloseClicked(object sender, EventArgs e)

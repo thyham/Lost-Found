@@ -41,6 +41,27 @@
 
                             <VerticalStackLayout Spacing="8" HorizontalOptions="Center">
 
+                                <!-- Item Image -->
+                                <Border Stroke="#E0E0E0"
+                                        StrokeThickness="1"
+                                        HeightRequest="100"
+                                        WidthRequest="120"
+                                        BackgroundColor="#F5F5F5">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="8"/>
+                                    </Border.StrokeShape>
+                                    <Image Source="{Binding ImagePath}"
+                                           Aspect="AspectFill">
+                                        <Image.Triggers>
+                                            <DataTrigger TargetType="Image" 
+                                                        Binding="{Binding ImagePath}" 
+                                                        Value="{x:Null}">
+                                                <Setter Property="IsVisible" Value="False"/>
+                                            </DataTrigger>
+                                        </Image.Triggers>
+                                    </Image>
+                                </Border>
+
                                 <Label Text="{Binding Name}" 
                                        FontAttributes="Bold"
                                        FontSize="16"

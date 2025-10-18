@@ -1,8 +1,4 @@
-﻿using Microsoft.Maui.Graphics;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Reflection.Metadata.Ecma335;
-using System.Runtime.CompilerServices;
+﻿using System.Collections.ObjectModel;
 
 namespace MauiApp3
 {
@@ -20,7 +16,6 @@ namespace MauiApp3
             RejectedForms = new ObservableCollection<Form>();
             ApprovedForms = new ObservableCollection<Form>();
 
-            // Load forms from file instead of test data
             LoadFormsFromService();
         }
 
@@ -34,18 +29,36 @@ namespace MauiApp3
             }
         }
 
-        public void StaffFilterRequestedForms()
+        // Staff filter by status - shows ALL forms with given status
+        public void StaffFilterRequestsByStatus(string status)
         {
             RequestedForms.Clear();
-            var requested = FormsCollection.Where(form =>
-                form.Status.Contains("Pending", StringComparison.OrdinalIgnoreCase));
+            var filtered = FormsCollection.Where(form =>
+                form.Status.Equals(status, StringComparison.OrdinalIgnoreCase));
 
-            foreach (var item in requested)
+            foreach (var item in filtered)
             {
                 RequestedForms.Add(item);
             }
         }
 
+        // Staff filter to show ALL requests regardless of status
+        public void StaffFilterAllRequests()
+        {
+            RequestedForms.Clear();
+            foreach (var form in FormsCollection)
+            {
+                RequestedForms.Add(form);
+            }
+        }
+
+        // Staff filter for pending only (backward compatibility)
+        public void StaffFilterRequestedForms()
+        {
+            StaffFilterRequestsByStatus("Pending");
+        }
+
+        // Student filters - only show their own requests
         public void FilterRequestedForms()
         {
             RequestedForms.Clear();

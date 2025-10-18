@@ -13,6 +13,27 @@
                    HorizontalOptions="Center"
                    Margin="0,0,0,10"/>
 
+            <Border Stroke="#E0E0E0" 
+                    StrokeThickness="2" 
+                    HeightRequest="250"
+                    BackgroundColor="#F5F5F5"
+                    Margin="0,0,0,15">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="10"/>
+                </Border.StrokeShape>
+                <Grid>
+                    <Image x:Name="ItemImageDisplay"
+                           Aspect="AspectFill"/>
+                    <Label x:Name="NoImageLabel"
+                           Text="No Image Available"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"
+                           TextColor="Gray"
+                           FontSize="16"
+                           IsVisible="True"/>
+                </Grid>
+            </Border>
+
             <Border Stroke="#E0E0E0" StrokeThickness="2" Padding="15" BackgroundColor="White">
                 <Border.StrokeShape>
                     <RoundRectangle CornerRadius="10"/>
