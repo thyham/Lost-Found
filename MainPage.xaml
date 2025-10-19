@@ -1,94 +1,118 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="MauiApp3.MainPage">
+             x:Class="MauiApp3.MainPage"
+             Title="Lost and Found">
 
-    <Grid RowDefinitions="Auto, *"
-          Padding="30,0"
-          RowSpacing="20">
+    <Grid RowDefinitions="Auto, *" Padding="20" RowSpacing="15">
 
-        <VerticalStackLayout Grid.Row="0" Spacing="20">
+        <VerticalStackLayout Grid.Row="0" Spacing="15" HorizontalOptions="Center">
 
             <Label Text="Lost Items"
                    FontAttributes="Bold"
                    FontSize="24"
-                   HorizontalOptions="Center" />
+                   HorizontalOptions="Center"/>
 
-            <SearchBar Placeholder="Search..."
-               Text="{Binding SearchQuery}" />
-
+            <SearchBar Placeholder="Search items..."
+                       Text="{Binding SearchQuery}"
+                       BackgroundColor="#F0F0F0"
+                       PlaceholderColor="Gray"
+                       TextColor="Black"
+                       HeightRequest="40"
+                       WidthRequest="300"
+                       Margin="0,5,0,0"/>
         </VerticalStackLayout>
 
-        <Border Grid.Row="1"
-                Stroke="White"
-                StrokeShape="RoundRectangle 10"
-                Padding="10"
-                Margin="5">
 
-            <CollectionView ItemsSource="{Binding FilteredItems}">
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Spacing="10" Padding="0,10,0,10">
 
-                <CollectionView.ItemsLayout>
-                    <GridItemsLayout Orientation="Vertical" Span="2" />
-                </CollectionView.ItemsLayout>
+                <Label Text="Available Lost Items"
+                       FontSize="20"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center"
+                       Margin="0,10,0,10"/>
 
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <Border Stroke="White" 
-                                StrokeShape="RoundRectangle 10"
-                                Padding="10"
-                                Margin="5"
-                                BackgroundColor="White">
+                <CollectionView ItemsSource="{Binding FilteredItems}">
+                    <CollectionView.ItemsLayout>
+                        <GridItemsLayout Orientation="Vertical" Span="2" />
+                    </CollectionView.ItemsLayout>
 
-                            <VerticalStackLayout Spacing="8" HorizontalOptions="Center">
+                    <CollectionView.EmptyView>
+                        <ContentView>
+                            <Label Text="No items found"
+                                   FontSize="16"
+                                   TextColor="Gray"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Center"
+                                   Margin="0,40,0,0"/>
+                        </ContentView>
+                    </CollectionView.EmptyView>
 
-                                <!-- Item Image -->
-                                <Border Stroke="#E0E0E0"
-                                        StrokeThickness="1"
-                                        HeightRequest="100"
-                                        WidthRequest="120"
-                                        BackgroundColor="#F5F5F5">
-                                    <Border.StrokeShape>
-                                        <RoundRectangle CornerRadius="8"/>
-                                    </Border.StrokeShape>
-                                    <Image Source="{Binding ImagePath}"
-                                           Aspect="AspectFill">
-                                        <Image.Triggers>
-                                            <DataTrigger TargetType="Image" 
-                                                        Binding="{Binding ImagePath}" 
-                                                        Value="{x:Null}">
-                                                <Setter Property="IsVisible" Value="False"/>
-                                            </DataTrigger>
-                                        </Image.Triggers>
-                                    </Image>
-                                </Border>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Border Stroke="#E0E0E0"
+                                    StrokeThickness="2"
+                                    BackgroundColor="White"
+                                    Padding="15"
+                                    Margin="8">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="10"/>
+                                </Border.StrokeShape>
 
-                                <Label Text="{Binding Name}" 
-                                       FontAttributes="Bold"
-                                       FontSize="16"
-                                       HorizontalOptions="Center" />
+                                <VerticalStackLayout Spacing="8" HorizontalOptions="Center">
 
-                                <Label Text="{Binding Category}" 
-                                       FontSize="12"
-                                       TextColor="Gray"
-                                       HorizontalOptions="Center" />
+                                    <Border Stroke="#E0E0E0"
+                                            StrokeThickness="1"
+                                            HeightRequest="100"
+                                            WidthRequest="120"
+                                            BackgroundColor="#F5F5F5">
+                                        <Border.StrokeShape>
+                                            <RoundRectangle CornerRadius="8"/>
+                                        </Border.StrokeShape>
 
-                                <Label Text="{Binding Location}" 
-                                       FontSize="11"
-                                       TextColor="DarkSlateGray"
-                                       HorizontalOptions="Center" />
+                                        <Image Source="{Binding ImagePath}"
+                                               Aspect="AspectFill">
+                                            <Image.Triggers>
+                                                <DataTrigger TargetType="Image" 
+                                                             Binding="{Binding ImagePath}" 
+                                                             Value="{x:Null}">
+                                                    <Setter Property="IsVisible" Value="False"/>
+                                                </DataTrigger>
+                                            </Image.Triggers>
+                                        </Image>
+                                    </Border>
 
-                                <Button Text="View Item"
-                                        FontSize="12"
-                                        FontAttributes="Bold"
-                                        Clicked="OnGoToDetailsClicked" />
+                                    <Label Text="{Binding Name}" 
+                                           FontAttributes="Bold"
+                                           FontSize="16"
+                                           HorizontalOptions="Center"/>
 
-                            </VerticalStackLayout>
+                                    <Label Text="{Binding Category}" 
+                                           FontSize="13"
+                                           TextColor="Gray"
+                                           HorizontalOptions="Center"/>
 
-                        </Border>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
+                                    <Label Text="{Binding Location}" 
+                                           FontSize="12"
+                                           TextColor="DarkSlateGray"
+                                           HorizontalOptions="Center"/>
 
-        </Border>
+                                    <Button Text="View Details"
+                                            FontSize="12"
+                                            FontAttributes="Bold"
+                                            BackgroundColor="#007AFF"
+                                            TextColor="White"
+                                            CornerRadius="8"
+                                            WidthRequest="120"
+                                            Clicked="OnGoToDetailsClicked"/>
+                                </VerticalStackLayout>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </VerticalStackLayout>
+        </ScrollView>
+
     </Grid>
 </ContentPage>

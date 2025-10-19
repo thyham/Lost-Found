@@ -56,7 +56,6 @@ namespace MauiApp3
                 {
                     System.Diagnostics.Debug.WriteLine("[UserService] No existing users file found. Creating default users...");
 
-                    // Create default demo student user
                     users.Add(new User { Id = 1, Username = "demo", Email = "demo@example.com", Password = "demo123", Role = "Student" });
                     SaveUsersToFile();
 
@@ -93,17 +92,15 @@ namespace MauiApp3
 
         public static bool UserExists(string username)
         {
-            // Check if trying to register as staff
             if (username.Equals(STAFF_USERNAME, StringComparison.OrdinalIgnoreCase))
             {
-                return true; // Staff username is reserved
+                return true;
             }
             return users.Any(u => u.Username.Equals(username, StringComparison.OrdinalIgnoreCase));
         }
 
         public static void AddUser(User user)
         {
-            // Prevent anyone from creating a staff account
             if (user.Username.Equals(STAFF_USERNAME, StringComparison.OrdinalIgnoreCase))
             {
                 System.Diagnostics.Debug.WriteLine("[UserService] Attempted to create reserved staff username - blocked");
@@ -111,7 +108,7 @@ namespace MauiApp3
             }
 
             user.Id = users.Count > 0 ? users.Max(u => u.Id) + 1 : 1;
-            user.Role = "Student"; // Force all new users to be students
+            user.Role = "Student";
             users.Add(user);
             SaveUsersToFile();
             System.Diagnostics.Debug.WriteLine($"[UserService] Added new user: {user.Username}, Role: {user.Role}");
@@ -119,10 +116,8 @@ namespace MauiApp3
 
         public static User GetUser(string username)
         {
-            // Check if this is staff login
             if (username.Equals(STAFF_USERNAME, StringComparison.OrdinalIgnoreCase))
             {
-                // Return a virtual staff user
                 return new User
                 {
                     Id = 0,
@@ -143,7 +138,6 @@ namespace MauiApp3
             System.Diagnostics.Debug.WriteLine("=== [UserService] Checking Credentials ===");
             System.Diagnostics.Debug.WriteLine($"Entered Username: {username}");
 
-            // Check if this is staff login
             if (username.Equals(STAFF_USERNAME, StringComparison.OrdinalIgnoreCase))
             {
                 bool isValid = password == STAFF_PASSWORD;
@@ -151,7 +145,6 @@ namespace MauiApp3
                 return isValid;
             }
 
-            // Check student users
             bool result = users.Any(u =>
                 u.Username.Equals(username, StringComparison.OrdinalIgnoreCase) &&
                 u.Password == password);
@@ -162,7 +155,6 @@ namespace MauiApp3
 
         public static bool IsStaff(string username)
         {
-            // Check if this is the hardcoded staff account
             if (username.Equals(STAFF_USERNAME, StringComparison.OrdinalIgnoreCase))
             {
                 return true;

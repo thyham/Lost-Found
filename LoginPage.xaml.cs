@@ -5,13 +5,6 @@
         public LoginPage()
         {
             InitializeComponent();
-            //var usersFilePath = Path.Combine(FileSystem.AppDataDirectory, "users.txt");
-            //if (File.Exists(usersFilePath))
-            //{
-            //    File.Delete(usersFilePath);
-            //    // Force UserService to reinitialize
-            //    var users = UserService.GetUsers();
-            //}
             CheckRememberedUser();
         }
 
@@ -19,11 +12,9 @@
         {
             base.OnAppearing();
 
-            // Reset login button state when page appears
             LoginButton.IsEnabled = true;
             LoginButton.Text = "Login";
 
-            // Clear error message
             ErrorLabel.IsVisible = false;
             ErrorLabel.Text = string.Empty;
         }
@@ -58,14 +49,12 @@
             LoginButton.IsEnabled = false;
             LoginButton.Text = "Logging in...";
 
-            // Use UserService.ValidateUser which handles both staff and student accounts
             bool isAuthenticated = UserService.ValidateUser(username, password);
 
             if (isAuthenticated)
             {
                 var user = UserService.GetUser(username);
 
-                // Save Remember Me preferences
                 if (RememberMeCheckBox.IsChecked)
                 {
                     Preferences.Set("RememberMe", true);
@@ -79,18 +68,15 @@
                     Preferences.Remove("SavedPassword");
                 }
 
-                // Save login status and current user
                 Preferences.Set("IsLoggedIn", true);
                 Preferences.Set("CurrentId", user.Id);
                 Preferences.Set("CurrentUser", username);
 
-                // Check if user is staff or student
                 bool isStaff = UserService.IsStaff(username);
                 Preferences.Set("IsStaff", isStaff);
 
                 System.Diagnostics.Debug.WriteLine($"[LoginPage] User '{username}' logged in. IsStaff: {isStaff}");
 
-                // Navigate to appropriate page based on role
                 if (isStaff)
                 {
                     await Shell.Current.GoToAsync("//StaffPage");

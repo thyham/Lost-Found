@@ -104,13 +104,11 @@
 
         private void SetActiveRequestButton(Button activeButton)
         {
-            // Reset all buttons
             AllRequestsButton.BackgroundColor = Color.FromArgb("#6C757D");
             PendingRequestsButton.BackgroundColor = Color.FromArgb("#6C757D");
             AcceptedRequestsButton.BackgroundColor = Color.FromArgb("#6C757D");
             RejectedRequestsButton.BackgroundColor = Color.FromArgb("#6C757D");
 
-            // Highlight active button based on which one it is
             if (activeButton == AllRequestsButton)
                 activeButton.BackgroundColor = Color.FromArgb("#007AFF");
             else if (activeButton == PendingRequestsButton)
@@ -121,7 +119,6 @@
                 activeButton.BackgroundColor = Color.FromArgb("#DC3545");
         }
 
-        // Item Management
         private async void OnAddItemClicked(object sender, EventArgs e)
         {
             await Navigation.PushAsync(new AddItemPage(itemsViewModel));

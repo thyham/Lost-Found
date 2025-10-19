@@ -29,7 +29,6 @@ namespace MauiApp3
             }
         }
 
-        // Staff filter by status - shows ALL forms with given status
         public void StaffFilterRequestsByStatus(string status)
         {
             RequestedForms.Clear();
@@ -42,7 +41,6 @@ namespace MauiApp3
             }
         }
 
-        // Staff filter to show ALL requests regardless of status
         public void StaffFilterAllRequests()
         {
             RequestedForms.Clear();
@@ -52,13 +50,11 @@ namespace MauiApp3
             }
         }
 
-        // Staff filter for pending only (backward compatibility)
         public void StaffFilterRequestedForms()
         {
             StaffFilterRequestsByStatus("Pending");
         }
 
-        // Student filters - only show their own requests
         public void FilterRequestedForms()
         {
             RequestedForms.Clear();

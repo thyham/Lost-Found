@@ -55,25 +55,21 @@
         {
             try
             {
-                // Save photo to app data directory
                 var fileName = $"item_{Guid.NewGuid()}.jpg";
                 var localPath = Path.Combine(FileSystem.AppDataDirectory, "ItemImages", fileName);
 
-                // Create directory if it doesn't exist
                 var directory = Path.GetDirectoryName(localPath);
                 if (!Directory.Exists(directory))
                 {
                     Directory.CreateDirectory(directory);
                 }
 
-                // Copy the file
                 using (var stream = await photo.OpenReadAsync())
                 using (var fileStream = File.Create(localPath))
                 {
                     await stream.CopyToAsync(fileStream);
                 }
 
-                // Store the path and display the image
                 _selectedImagePath = localPath;
                 ItemImage.Source = ImageSource.FromFile(localPath);
                 ItemImage.IsVisible = true;
@@ -122,7 +118,7 @@
                 Date = date,
                 Notes = notes ?? "No additional notes",
                 Status = "Pending",
-                ImagePath = _selectedImagePath // Save the image path
+                ImagePath = _selectedImagePath 
             };
 
             // Save to service and refresh viewmodel

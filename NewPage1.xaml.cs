@@ -14,7 +14,6 @@ public partial class NewPage1 : ContentPage
         {
             _item = value;
 
-            // Reload the item from service to ensure we have the latest data including ImagePath
             if (_item != null)
             {
                 var freshItem = ItemService.GetItem(_item.Id);
@@ -77,7 +76,6 @@ public partial class NewPage1 : ContentPage
     {
         if (_item != null)
         {
-            // Store globally instead of passing through Shell route
             ViewModelLocator.SelectedItem = _item;
             await Shell.Current.GoToAsync(nameof(NewPage2));
         }

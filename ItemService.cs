@@ -51,7 +51,6 @@ namespace MauiApp3
                 else
                 {
                     System.Diagnostics.Debug.WriteLine("[ItemService] No existing items file found. Creating default items...");
-                    // Create default items
                     items.Add(new Item { Id = 1, Name = "IPhone Charger", Category = "Technology", Date = "08/12/2025", Location = "Building 11.5.204", Notes = "It is an iphone 16 charger", Status = "Pending", ImagePath = null });
                     items.Add(new Item { Id = 2, Name = "Black Jacket", Category = "Clothing", Date = "08/12/2025", Location = "Building 11.5.204", Notes = "It is a puffer jacket", Status = "Confirmed", ImagePath = null });
                     items.Add(new Item { Id = 3, Name = "Blue Jacket", Category = "Clothing", Date = "08/12/2025", Location = "Building 11.5.204", Notes = "It is a tommy hilfiger jacket", Status = "Pending", ImagePath = null });

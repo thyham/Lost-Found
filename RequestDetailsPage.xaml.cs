@@ -10,7 +10,6 @@
             _form = form;
             BindingContext = _form;
 
-            // Load the item's image
             LoadItemImage();
         }
 
@@ -18,7 +17,6 @@
         {
             try
             {
-                // Get the item associated with this form
                 var item = ItemService.GetItem(_form.itemId);
 
                 if (item != null)

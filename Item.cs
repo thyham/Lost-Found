@@ -9,6 +9,6 @@
         public string Notes { get; set; }
         public string Location { get; set; }
         public string Status { get; set; }
-        public string ImagePath { get; set; } // Path to saved image
+        public string ImagePath { get; set; } 
     }
 }
