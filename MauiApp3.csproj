@@ -65,31 +65,31 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="MyItems.xaml.cs">
+	  <Compile Update="Pages\Student\MyItems.xaml.cs">
 	    <DependentUpon>MyItems.xaml</DependentUpon>
 	  </Compile>
-	  <Compile Update="StudentRequestDetailsPage.xaml.cs">
+	  <Compile Update="Pages\Student\StudentRequestDetailsPage.xaml.cs">
 	    <DependentUpon>StudentRequestDetailsPage.xaml</DependentUpon>
 	  </Compile>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="LoginPage.xaml">
+	  <MauiXaml Update="Pages\Auth\LoginPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="NewPage1.xaml">
+	  <MauiXaml Update="Pages\Student\NewPage1.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="NewPage2.xaml">
+	  <MauiXaml Update="Pages\Student\NewPage2.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="MyItems.xaml">
+	  <MauiXaml Update="Pages\Student\MyItems.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="StudentRequestDetailsPage.xaml">
+	  <MauiXaml Update="Pages\Student\StudentRequestDetailsPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-		<MauiXaml Update="RegisterPage.xaml">
+		<MauiXaml Update="Pages\Auth\RegisterPage.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 	</ItemGroup>
