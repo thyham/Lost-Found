@@ -14,6 +14,7 @@
             string password = PasswordEntry.Text;
             string confirmPassword = ConfirmPasswordEntry.Text;
 
+            // Validation checks
             if (string.IsNullOrWhiteSpace(username))
             {
                 ShowError("Username is required");
@@ -26,6 +27,7 @@
                 return;
             }
 
+            // Prevent using reserved staff username
             if (username.Equals("staff", StringComparison.OrdinalIgnoreCase))
             {
                 ShowError("This username is reserved");
@@ -68,11 +70,12 @@
                 return;
             }
 
+            // Show loading state
             RegisterButton.IsEnabled = false;
             RegisterButton.Text = "Creating account...";
-
             await Task.Delay(1000);
 
+            // Create and save new student account
             var newUser = new User
             {
                 Username = username,
@@ -84,10 +87,9 @@
             UserService.AddUser(newUser);
 
             ShowSuccess("Student account created successfully!");
-
             await Task.Delay(1500);
 
-            await Navigation.PopAsync();
+            await Shell.Current.GoToAsync("//LoginPage");
         }
 
         private bool IsValidEmail(string email)

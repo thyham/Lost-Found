@@ -9,7 +9,6 @@ namespace MauiApp3
         {
             InitializeComponent();
 
-            // Register routes for navigation
             Routing.RegisterRoute(nameof(LoginPage), typeof(LoginPage));
             Routing.RegisterRoute(nameof(NewPage1), typeof(NewPage1));
             Routing.RegisterRoute(nameof(NewPage2), typeof(NewPage2));

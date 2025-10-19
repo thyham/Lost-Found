@@ -12,13 +12,14 @@
         {
             base.OnAppearing();
 
+            // Reset UI to default state
             LoginButton.IsEnabled = true;
             LoginButton.Text = "Login";
-
             ErrorLabel.IsVisible = false;
             ErrorLabel.Text = string.Empty;
         }
 
+        // Auto-fill credentials if "Remember Me" was previously checked
         private void CheckRememberedUser()
         {
             if (Preferences.ContainsKey("RememberMe") && Preferences.Get("RememberMe", false))
@@ -46,6 +47,7 @@
                 return;
             }
 
+            // Show loading state
             LoginButton.IsEnabled = false;
             LoginButton.Text = "Logging in...";
 
@@ -55,6 +57,7 @@
             {
                 var user = UserService.GetUser(username);
 
+                // Handle "Remember Me" preference
                 if (RememberMeCheckBox.IsChecked)
                 {
                     Preferences.Set("RememberMe", true);
@@ -68,6 +71,7 @@
                     Preferences.Remove("SavedPassword");
                 }
 
+                // Store session data
                 Preferences.Set("IsLoggedIn", true);
                 Preferences.Set("CurrentId", user.Id);
                 Preferences.Set("CurrentUser", username);
@@ -77,6 +81,7 @@
 
                 System.Diagnostics.Debug.WriteLine($"[LoginPage] User '{username}' logged in. IsStaff: {isStaff}");
 
+                // Navigate based on user role
                 if (isStaff)
                 {
                     await Shell.Current.GoToAsync("//StaffPage");
@@ -102,9 +107,7 @@
 
         private async void OnRegisterClicked(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new RegisterPage());
+            await Shell.Current.GoToAsync("//RegisterPage");
         }
     }
 }
-
-
