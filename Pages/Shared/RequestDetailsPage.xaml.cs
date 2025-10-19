@@ -11,6 +11,7 @@
             BindingContext = _form;
 
             LoadItemImage();
+            DisplayCollectionInstructions();
         }
 
         private void LoadItemImage()
@@ -42,6 +43,19 @@
             {
                 ItemImage.Source = null;
                 NoImageLabel.IsVisible = true;
+            }
+        }
+
+        private void DisplayCollectionInstructions()
+        {
+            if (_form.Status == "Approved" && !string.IsNullOrWhiteSpace(_form.CollectionInstructions))
+            {
+                InstructionsBorder.IsVisible = true;
+                InstructionsLabel.Text = _form.CollectionInstructions;
+            }
+            else
+            {
+                InstructionsBorder.IsVisible = false;
             }
         }
 

@@ -39,7 +39,8 @@ namespace MauiApp3
                                 itemId = int.TryParse(parts[2], out var iId) ? iId : 0,
                                 itemName = parts[3],
                                 Notes = parts[4],
-                                Status = parts.Length > 5 ? parts[5] : "Pending"
+                                Status = parts.Length > 5 ? parts[5] : "Pending",
+                                CollectionInstructions = parts.Length > 6 ? parts[6] : "" 
                             };
                             forms.Add(form);
                             System.Diagnostics.Debug.WriteLine($"[FormService] Loaded form: {form.formId}, Item: {form.itemName}, Status: {form.Status}");
@@ -62,7 +63,7 @@ namespace MauiApp3
             try
             {
                 var lines = forms.Select(f =>
-                    $"{f.formId}|{f.studentId}|{f.itemId}|{f.itemName}|{f.Notes}|{f.Status}");
+                    $"{f.formId}|{f.studentId}|{f.itemId}|{f.itemName}|{f.Notes}|{f.Status}|{f.CollectionInstructions ?? ""}");
                 File.WriteAllLines(formsFilePath, lines);
                 System.Diagnostics.Debug.WriteLine($"[FormService] Saved {forms.Count} forms to {formsFilePath}");
             }
@@ -92,6 +93,7 @@ namespace MauiApp3
             {
                 existingForm.Status = form.Status;
                 existingForm.Notes = form.Notes;
+                existingForm.CollectionInstructions = form.CollectionInstructions;
                 SaveFormsToFile();
                 System.Diagnostics.Debug.WriteLine($"[FormService] Updated form: {form.formId}, Status: {form.Status}");
             }
