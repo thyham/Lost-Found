@@ -40,21 +40,21 @@ namespace MauiApp3
                                 Date = parts[3],
                                 Location = parts[4],
                                 Notes = parts[5],
-                                Status = parts[6]
+                                Status = parts[6],
+                                ImagePath = parts.Length > 7 ? parts[7] : null
                             };
                             items.Add(item);
-                            System.Diagnostics.Debug.WriteLine($"[ItemService] Loaded item: {item.Id}, Name: {item.Name}");
+                            System.Diagnostics.Debug.WriteLine($"[ItemService] Loaded item: {item.Id}, Name: {item.Name}, Image: {item.ImagePath}");
                         }
                     }
                 }
                 else
                 {
                     System.Diagnostics.Debug.WriteLine("[ItemService] No existing items file found. Creating default items...");
-                    // Create default items
-                    items.Add(new Item { Id = 1, Name = "IPhone Charger", Category = "Technology", Date = "08/12/2025", Location = "Building 11.5.204", Notes = "It is an iphone 16 charger", Status = "Pending" });
-                    items.Add(new Item { Id = 2, Name = "Black Jacket", Category = "Clothing", Date = "08/12/2025", Location = "Building 11.5.204", Notes = "It is a puffer jacket", Status = "Confirmed" });
-                    items.Add(new Item { Id = 3, Name = "Blue Jacket", Category = "Clothing", Date = "08/12/2025", Location = "Building 11.5.204", Notes = "It is a tommy hilfiger jacket", Status = "Pending" });
-                    items.Add(new Item { Id = 4, Name = "Samsung Charger", Category = "Technology", Date = "08/12/2025", Location = "Building 11.5.204", Notes = "It is a samsung 21fe charger", Status = "Pending" });
+                    items.Add(new Item { Id = 1, Name = "IPhone Charger", Category = "Technology", Date = "08/12/2025", Location = "Building 11.5.204", Notes = "It is an iphone 16 charger", Status = "Pending", ImagePath = null });
+                    items.Add(new Item { Id = 2, Name = "Black Jacket", Category = "Clothing", Date = "08/12/2025", Location = "Building 11.5.204", Notes = "It is a puffer jacket", Status = "Confirmed", ImagePath = null });
+                    items.Add(new Item { Id = 3, Name = "Blue Jacket", Category = "Clothing", Date = "08/12/2025", Location = "Building 11.5.204", Notes = "It is a tommy hilfiger jacket", Status = "Pending", ImagePath = null });
+                    items.Add(new Item { Id = 4, Name = "Samsung Charger", Category = "Technology", Date = "08/12/2025", Location = "Building 11.5.204", Notes = "It is a samsung 21fe charger", Status = "Pending", ImagePath = null });
                     SaveItemsToFile();
                 }
             }
@@ -69,7 +69,7 @@ namespace MauiApp3
             try
             {
                 var lines = items.Select(i =>
-                    $"{i.Id}|{i.Name}|{i.Category}|{i.Date}|{i.Location}|{i.Notes}|{i.Status}");
+                    $"{i.Id}|{i.Name}|{i.Category}|{i.Date}|{i.Location}|{i.Notes}|{i.Status}|{i.ImagePath ?? ""}");
                 File.WriteAllLines(itemsFilePath, lines);
                 System.Diagnostics.Debug.WriteLine($"[ItemService] Saved {items.Count} items to {itemsFilePath}");
             }
@@ -89,7 +89,7 @@ namespace MauiApp3
             item.Id = items.Count > 0 ? items.Max(i => i.Id) + 1 : 1;
             items.Add(item);
             SaveItemsToFile();
-            System.Diagnostics.Debug.WriteLine($"[ItemService] Added new item: {item.Id}, Name: {item.Name}");
+            System.Diagnostics.Debug.WriteLine($"[ItemService] Added new item: {item.Id}, Name: {item.Name}, Image: {item.ImagePath}");
         }
 
         public static void UpdateItem(Item item)
@@ -103,6 +103,7 @@ namespace MauiApp3
                 existingItem.Location = item.Location;
                 existingItem.Notes = item.Notes;
                 existingItem.Status = item.Status;
+                existingItem.ImagePath = item.ImagePath;
                 SaveItemsToFile();
                 System.Diagnostics.Debug.WriteLine($"[ItemService] Updated item: {item.Id}");
             }
@@ -113,6 +114,20 @@ namespace MauiApp3
             var item = items.FirstOrDefault(i => i.Id == itemId);
             if (item != null)
             {
+              
+                if (!string.IsNullOrEmpty(item.ImagePath) && File.Exists(item.ImagePath))
+                {
+                    try
+                    {
+                        File.Delete(item.ImagePath);
+                        System.Diagnostics.Debug.WriteLine($"[ItemService] Deleted image file: {item.ImagePath}");
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"[ItemService] Error deleting image: {ex.Message}");
+                    }
+                }
+
                 items.Remove(item);
                 SaveItemsToFile();
                 System.Diagnostics.Debug.WriteLine($"[ItemService] Deleted item: {itemId}");

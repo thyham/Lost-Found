@@ -7,7 +7,6 @@
     Shell.FlyoutBehavior="Disabled"
     Title="MauiApp3">
 
-    <!-- Hidden pages (not shown in the flyout menu) -->
     <ShellContent
         Title="Login"
         ContentTemplate="{DataTemplate local:LoginPage}"
@@ -32,7 +31,6 @@
         Route="NewPage2"
         FlyoutItemIsVisible="False" />
 
-    <!-- Student Pages (visible in flyout for students ONLY) -->
     <ShellContent
         x:Name="HomeShellContent"
         Title="Home"
@@ -49,7 +47,6 @@
         Route="MyItems"
         FlyoutItemIsVisible="False" />
 
-    <!-- Staff Pages (visible in flyout for staff ONLY) -->
     <ShellContent
         x:Name="StaffPageShellContent"
         Title="Staff Dashboard"
@@ -58,7 +55,6 @@
         Route="StaffPage"
         FlyoutItemIsVisible="False" />
 
-    <!-- Flyout Footer for logout -->
     <Shell.FlyoutFooter>
         <VerticalStackLayout Padding="20">
             <Button

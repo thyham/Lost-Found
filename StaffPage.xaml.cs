@@ -4,6 +4,7 @@
     {
         private ItemsViewModel itemsViewModel;
         private FormViewModel formViewModel;
+        private string currentRequestFilter = "All";
 
         public StaffPage()
         {
@@ -15,16 +16,19 @@
             ItemsCollectionView.BindingContext = itemsViewModel;
             RequestsCollectionView.BindingContext = formViewModel;
 
-            formViewModel.StaffFilterRequestedForms();
+         
+            formViewModel.StaffFilterAllRequests();
         }
 
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            // Refresh data when page appears
+            
             itemsViewModel.RefreshFromService();
             formViewModel.RefreshFromService();
-            formViewModel.StaffFilterRequestedForms();
+
+       
+            ApplyRequestFilter(currentRequestFilter);
         }
 
         private void OnItemsTabClicked(object sender, EventArgs e)
@@ -44,10 +48,77 @@
             ItemsTabButton.BackgroundColor = Color.FromArgb("#6C757D");
             RequestsTabButton.BackgroundColor = Color.FromArgb("#007AFF");
 
-            formViewModel.StaffFilterRequestedForms();
+            ApplyRequestFilter(currentRequestFilter);
+
+         
+            if (currentRequestFilter == "All")
+                SetActiveRequestButton(AllRequestsButton);
+            else if (currentRequestFilter == "Pending")
+                SetActiveRequestButton(PendingRequestsButton);
+            else if (currentRequestFilter == "Approved")
+                SetActiveRequestButton(AcceptedRequestsButton);
+            else if (currentRequestFilter == "Rejected")
+                SetActiveRequestButton(RejectedRequestsButton);
         }
 
-        // Item Management
+       
+        private void OnAllRequestsClicked(object sender, EventArgs e)
+        {
+            currentRequestFilter = "All";
+            ApplyRequestFilter("All");
+            SetActiveRequestButton(AllRequestsButton);
+        }
+
+        private void OnPendingRequestsClicked(object sender, EventArgs e)
+        {
+            currentRequestFilter = "Pending";
+            ApplyRequestFilter("Pending");
+            SetActiveRequestButton(PendingRequestsButton);
+        }
+
+        private void OnAcceptedRequestsClicked(object sender, EventArgs e)
+        {
+            currentRequestFilter = "Approved";
+            ApplyRequestFilter("Approved");
+            SetActiveRequestButton(AcceptedRequestsButton);
+        }
+
+        private void OnRejectedRequestsClicked(object sender, EventArgs e)
+        {
+            currentRequestFilter = "Rejected";
+            ApplyRequestFilter("Rejected");
+            SetActiveRequestButton(RejectedRequestsButton);
+        }
+
+        private void ApplyRequestFilter(string status)
+        {
+            if (status == "All")
+            {
+                formViewModel.StaffFilterAllRequests();
+            }
+            else
+            {
+                formViewModel.StaffFilterRequestsByStatus(status);
+            }
+        }
+
+        private void SetActiveRequestButton(Button activeButton)
+        {
+            AllRequestsButton.BackgroundColor = Color.FromArgb("#6C757D");
+            PendingRequestsButton.BackgroundColor = Color.FromArgb("#6C757D");
+            AcceptedRequestsButton.BackgroundColor = Color.FromArgb("#6C757D");
+            RejectedRequestsButton.BackgroundColor = Color.FromArgb("#6C757D");
+
+            if (activeButton == AllRequestsButton)
+                activeButton.BackgroundColor = Color.FromArgb("#007AFF");
+            else if (activeButton == PendingRequestsButton)
+                activeButton.BackgroundColor = Color.FromArgb("#FFC107");
+            else if (activeButton == AcceptedRequestsButton)
+                activeButton.BackgroundColor = Color.FromArgb("#28A745");
+            else if (activeButton == RejectedRequestsButton)
+                activeButton.BackgroundColor = Color.FromArgb("#DC3545");
+        }
+
         private async void OnAddItemClicked(object sender, EventArgs e)
         {
             await Navigation.PushAsync(new AddItemPage(itemsViewModel));
@@ -105,14 +176,35 @@
 
                 if (confirm)
                 {
+                    
+
+                    // Update form status
                     selectedForm.Status = "Approved";
                     FormService.UpdateForm(selectedForm);
+                    
+
+                    // Update the item status to "Confirmed"
+                    var item = ItemService.GetItem(selectedForm.itemId);
+                  
+
+                    item.Status = "Confirmed";
+                    ItemService.UpdateItem(item);
+                       
+
+                       
+                      var verifyItem = ItemService.GetItem(selectedForm.itemId);
+                       
+                    }
+                    
+
+                    // Refresh both view models
                     formViewModel.RefreshFromService();
-                    formViewModel.StaffFilterRequestedForms();
-                    await DisplayAlert("Success", "Request approved!", "OK");
+                    itemsViewModel.RefreshFromService();
+                    ApplyRequestFilter(currentRequestFilter);
+
+                    await DisplayAlert("Success", "Request approved and item marked as confirmed!", "OK");
                 }
             }
-        }
 
         private async void OnRejectRequestClicked(object sender, EventArgs e)
         {
@@ -130,7 +222,7 @@
                     selectedForm.Status = "Rejected";
                     FormService.UpdateForm(selectedForm);
                     formViewModel.RefreshFromService();
-                    formViewModel.StaffFilterRequestedForms();
+                    ApplyRequestFilter(currentRequestFilter);
                     await DisplayAlert("Rejected", "Request has been rejected", "OK");
                 }
             }

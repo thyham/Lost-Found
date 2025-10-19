@@ -24,7 +24,6 @@ namespace MauiApp3
         {
             base.OnAppearing();
 
-            // Always fetch the latest selected item
             _item = ViewModelLocator.SelectedItem;
             BindingContext = _item;
             StudentIdEntry.Text = Preferences.Get("CurrentId", -1).ToString();
@@ -51,7 +50,6 @@ namespace MauiApp3
                 Status = "Pending"
             };
 
-            // Save to service and refresh viewmodel
             FormService.AddForm(newForm);
             formViewModel.RefreshFromService();
             formViewModel.FilterRequestedForms();

@@ -14,7 +14,6 @@
             string password = PasswordEntry.Text;
             string confirmPassword = ConfirmPasswordEntry.Text;
 
-            // Validation
             if (string.IsNullOrWhiteSpace(username))
             {
                 ShowError("Username is required");
@@ -27,7 +26,6 @@
                 return;
             }
 
-            // Check for reserved staff username
             if (username.Equals("staff", StringComparison.OrdinalIgnoreCase))
             {
                 ShowError("This username is reserved");
@@ -70,13 +68,11 @@
                 return;
             }
 
-            // Disable button and show loading state
             RegisterButton.IsEnabled = false;
             RegisterButton.Text = "Creating account...";
 
-            await Task.Delay(1000); // Simulate network delay
+            await Task.Delay(1000);
 
-            // Always create as Student (role is enforced in UserService.AddUser)
             var newUser = new User
             {
                 Username = username,
@@ -91,7 +87,6 @@
 
             await Task.Delay(1500);
 
-            // Navigate back to login page
             await Navigation.PopAsync();
         }
 

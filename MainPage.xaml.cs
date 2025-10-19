@@ -16,7 +16,6 @@ namespace MauiApp3
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            // Refresh items when page appears to show staff changes
             _viewModel.RefreshFromService();
         }
 

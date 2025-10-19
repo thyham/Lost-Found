@@ -13,7 +13,6 @@ namespace MauiApp3
             viewModel = ViewModelLocator.FormVM;
             BindingContext = viewModel;
 
-            // Default view: show all forms
             activeButton = AllFormsTabButton;
             ShowAllForms();
         }
@@ -21,10 +20,8 @@ namespace MauiApp3
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            // Refresh data when page appears to show staff responses
             viewModel.RefreshFromService();
 
-            // Re-apply the current filter
             if (activeButton == AllFormsTabButton)
             {
                 ShowAllForms();
@@ -85,17 +82,14 @@ namespace MauiApp3
 
         private void HandleTabButtonClick(Button clickedButton, string filterType)
         {
-            // If clicking the same active button, do nothing
             if (activeButton == clickedButton)
             {
                 return;
             }
 
-            // Set new active button (highlight)
             SetActiveButton(clickedButton);
             activeButton = clickedButton;
 
-            // Filter and update based on the selected tab
             switch (filterType)
             {
                 case "All":
@@ -121,26 +115,22 @@ namespace MauiApp3
 
         private void ShowAllForms()
         {
-            // Filter all forms for current student
             var currentId = Preferences.Get("CurrentId", -1);
             var allUserForms = viewModel.FormsCollection
                 .Where(form => form.studentId == currentId)
                 .ToList();
 
-            // Create a temporary observable collection
             var tempCollection = new ObservableCollection<Form>(allUserForms);
             FormsList.ItemsSource = tempCollection;
         }
 
         private void SetActiveButton(Button active)
         {
-            // Reset all button colors
             AllFormsTabButton.BackgroundColor = Color.FromArgb("#6C757D");
             PendingFormsTabButton.BackgroundColor = Color.FromArgb("#6C757D");
             ApprovedFormsTabButton.BackgroundColor = Color.FromArgb("#6C757D");
             RejectedFormsTabButton.BackgroundColor = Color.FromArgb("#6C757D");
 
-            // Highlight active one
             active.BackgroundColor = Color.FromArgb("#007BFF");
         }
     }

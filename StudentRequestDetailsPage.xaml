@@ -13,9 +13,24 @@
                    HorizontalOptions="Center"
                    Margin="0,0,0,10"/>
 
-            <Image Source="iphonecharger.jpg"
-                   HeightRequest="200"
-                   Aspect="AspectFit"/>
+            <Border Stroke="#E0E0E0" 
+                    StrokeThickness="2" 
+                    HeightRequest="200"
+                    BackgroundColor="#F5F5F5">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="8"/>
+                </Border.StrokeShape>
+                <Grid>
+                    <Label x:Name="NoImageLabel"
+                           Text="No Image Available"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"
+                           TextColor="Gray"
+                           FontSize="14"/>
+                    <Image x:Name="ItemImage"
+                           Aspect="AspectFill"/>
+                </Grid>
+            </Border>
 
             <Border Stroke="#FFC107" StrokeThickness="2" Padding="15" BackgroundColor="White">
                 <Border.StrokeShape>
@@ -62,7 +77,6 @@
                     TextColor="White"
                     HeightRequest="50"
                     Clicked="OnCancelRequestClicked"/>
-
 
         </VerticalStackLayout>
     </ScrollView>

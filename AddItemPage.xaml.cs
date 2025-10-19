@@ -3,12 +3,83 @@
     public partial class AddItemPage : ContentPage
     {
         private ItemsViewModel _itemsViewModel;
+        private string _selectedImagePath;
 
         public AddItemPage(ItemsViewModel itemsViewModel)
         {
             InitializeComponent();
             _itemsViewModel = itemsViewModel;
             DatePicker.Date = DateTime.Now;
+        }
+
+        private async void OnTakePhotoClicked(object sender, EventArgs e)
+        {
+            try
+            {
+                if (MediaPicker.Default.IsCaptureSupported)
+                {
+                    var photo = await MediaPicker.Default.CapturePhotoAsync();
+                    if (photo != null)
+                    {
+                        await LoadAndSavePhoto(photo);
+                    }
+                }
+                else
+                {
+                    await DisplayAlert("Not Supported", "Camera is not available on this device", "OK");
+                }
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Error", $"Failed to take photo: {ex.Message}", "OK");
+            }
+        }
+
+        private async void OnPickPhotoClicked(object sender, EventArgs e)
+        {
+            try
+            {
+                var photo = await MediaPicker.Default.PickPhotoAsync();
+                if (photo != null)
+                {
+                    await LoadAndSavePhoto(photo);
+                }
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Error", $"Failed to pick photo: {ex.Message}", "OK");
+            }
+        }
+
+        private async Task LoadAndSavePhoto(FileResult photo)
+        {
+            try
+            {
+                var fileName = $"item_{Guid.NewGuid()}.jpg";
+                var localPath = Path.Combine(FileSystem.AppDataDirectory, "ItemImages", fileName);
+
+                var directory = Path.GetDirectoryName(localPath);
+                if (!Directory.Exists(directory))
+                {
+                    Directory.CreateDirectory(directory);
+                }
+
+                using (var stream = await photo.OpenReadAsync())
+                using (var fileStream = File.Create(localPath))
+                {
+                    await stream.CopyToAsync(fileStream);
+                }
+
+                _selectedImagePath = localPath;
+                ItemImage.Source = ImageSource.FromFile(localPath);
+                ItemImage.IsVisible = true;
+                NoImageLabel.IsVisible = false;
+
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Error", $"Failed to save photo: {ex.Message}", "OK");
+            }
         }
 
         private async void OnAddItemClicked(object sender, EventArgs e)
@@ -46,7 +117,8 @@
                 Location = location,
                 Date = date,
                 Notes = notes ?? "No additional notes",
-                Status = "Pending"
+                Status = "Pending",
+                ImagePath = _selectedImagePath 
             };
 
             // Save to service and refresh viewmodel

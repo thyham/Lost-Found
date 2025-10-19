@@ -5,24 +5,16 @@
         public LoginPage()
         {
             InitializeComponent();
-            //var usersFilePath = Path.Combine(FileSystem.AppDataDirectory, "users.txt");
-            //if (File.Exists(usersFilePath))
-            //{
-            //    File.Delete(usersFilePath);
-            //    // Force UserService to reinitialize
-            //    var users = UserService.GetUsers();
-            //}
             CheckRememberedUser();
         }
+
         protected override void OnAppearing()
         {
             base.OnAppearing();
 
-            // Reset login button state when page appears
             LoginButton.IsEnabled = true;
             LoginButton.Text = "Login";
 
-            // Clear error message
             ErrorLabel.IsVisible = false;
             ErrorLabel.Text = string.Empty;
         }
@@ -54,15 +46,15 @@
                 return;
             }
 
-            //LoginButton.IsEnabled = false;
+            LoginButton.IsEnabled = false;
             LoginButton.Text = "Logging in...";
 
-            bool isAuthenticated = await AuthenticateUser(username, password);
+            bool isAuthenticated = UserService.ValidateUser(username, password);
 
             if (isAuthenticated)
             {
                 var user = UserService.GetUser(username);
-                // Save Remember Me preferences
+
                 if (RememberMeCheckBox.IsChecked)
                 {
                     Preferences.Set("RememberMe", true);
@@ -75,23 +67,23 @@
                     Preferences.Remove("SavedUsername");
                     Preferences.Remove("SavedPassword");
                 }
-                // Save login status and current user
+
                 Preferences.Set("IsLoggedIn", true);
                 Preferences.Set("CurrentId", user.Id);
                 Preferences.Set("CurrentUser", username);
 
-                // Check if user is staff or student
                 bool isStaff = UserService.IsStaff(username);
                 Preferences.Set("IsStaff", isStaff);
 
-                // Navigate to appropriate page based on role
+                System.Diagnostics.Debug.WriteLine($"[LoginPage] User '{username}' logged in. IsStaff: {isStaff}");
+
                 if (isStaff)
                 {
                     await Shell.Current.GoToAsync("//StaffPage");
                 }
                 else
                 {
-                await Shell.Current.GoToAsync("//MainPage");
+                    await Shell.Current.GoToAsync("//MainPage");
                 }
             }
             else
@@ -100,13 +92,6 @@
                 LoginButton.IsEnabled = true;
                 LoginButton.Text = "Login";
             }
-        }
-
-        private async Task<bool> AuthenticateUser(string username, string password)
-        {
-            await Task.Delay(1000); // Simulate network delay
-            var users = UserService.GetUsers();
-            return users.Any(u => u.Username == username && u.Password == password);
         }
 
         private void ShowError(string message)
@@ -121,3 +106,5 @@
         }
     }
 }
+
+
