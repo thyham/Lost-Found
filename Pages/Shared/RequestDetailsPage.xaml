@@ -66,9 +66,51 @@
 
                     <StackLayout>
                         <Label Text="Status:" FontAttributes="Bold" FontSize="16"/>
-                        <Label Text="{Binding Status}" FontSize="18" FontAttributes="Bold" TextColor="#FFC107"/>
+                        <Label Text="{Binding Status}" FontSize="18" FontAttributes="Bold">
+                            <Label.Triggers>
+                                <DataTrigger TargetType="Label" Binding="{Binding Status}" Value="Pending">
+                                    <Setter Property="TextColor" Value="#FFC107"/>
+                                </DataTrigger>
+                                <DataTrigger TargetType="Label" Binding="{Binding Status}" Value="Approved">
+                                    <Setter Property="TextColor" Value="#28A745"/>
+                                </DataTrigger>
+                                <DataTrigger TargetType="Label" Binding="{Binding Status}" Value="Rejected">
+                                    <Setter Property="TextColor" Value="#DC3545"/>
+                                </DataTrigger>
+                            </Label.Triggers>
+                        </Label>
                     </StackLayout>
 
+                </VerticalStackLayout>
+            </Border>
+
+            
+            <Border x:Name="InstructionsBorder"
+                    Stroke="#28A745" 
+                    StrokeThickness="2" 
+                    Padding="15" 
+                    BackgroundColor="#F0FFF4"
+                    IsVisible="False">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="10"/>
+                </Border.StrokeShape>
+                <VerticalStackLayout Spacing="10">
+                    <HorizontalStackLayout Spacing="8">
+                        <Label Text="✓" 
+                               FontSize="24" 
+                               TextColor="#28A745"
+                               FontAttributes="Bold"/>
+                        <Label Text="Collection Instructions" 
+                               FontAttributes="Bold" 
+                               FontSize="18"
+                               TextColor="#28A745"
+                               VerticalOptions="Center"/>
+                    </HorizontalStackLayout>
+
+                    <Label x:Name="InstructionsLabel"
+                           FontSize="16" 
+                           TextColor="DarkSlateGray"
+                           LineBreakMode="WordWrap"/>
                 </VerticalStackLayout>
             </Border>
 

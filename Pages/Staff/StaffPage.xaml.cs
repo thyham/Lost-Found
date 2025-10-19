@@ -153,7 +153,7 @@
             }
         }
 
-        // Request Management
+        
         private async void OnViewRequestDetailsClicked(object sender, EventArgs e)
         {
             var button = sender as Button;
@@ -168,6 +168,21 @@
             var button = sender as Button;
             if (button?.BindingContext is Form selectedForm)
             {
+                
+                string instructions = await DisplayPromptAsync(
+                    "Collection Instructions",
+                    "Enter instructions for the student on how to collect their item:",
+                    placeholder: "e.g., Visit Building 11, Room 204, Mon-Fri 9AM-5PM",
+                    maxLength: 500,
+                    keyboard: Keyboard.Text);
+
+                
+                if (string.IsNullOrWhiteSpace(instructions))
+                {
+                    await DisplayAlert("Cancelled", "Request approval cancelled. Instructions are required.", "OK");
+                    return;
+                }
+
                 bool confirm = await DisplayAlert(
                     "Accept Request",
                     $"Accept claim request for '{selectedForm.itemName}' by Student ID {selectedForm.studentId}?",
@@ -177,35 +192,29 @@
                 if (confirm)
                 {
                     
-
-                    // Update form status
                     selectedForm.Status = "Approved";
+                    selectedForm.CollectionInstructions = instructions;
                     FormService.UpdateForm(selectedForm);
-                    
 
-                    // Update the item status to "Confirmed"
+                    
                     var item = ItemService.GetItem(selectedForm.itemId);
-                  
-
-                    item.Status = "Confirmed";
-                    ItemService.UpdateItem(item);
-                       
-
-                       
-                      var verifyItem = ItemService.GetItem(selectedForm.itemId);
-                       
+                    if (item != null)
+                    {
+                        item.Status = "Confirmed";
+                        ItemService.UpdateItem(item);
                     }
-                    
 
-                    // Refresh both view models
+                    
                     formViewModel.RefreshFromService();
                     itemsViewModel.RefreshFromService();
                     ApplyRequestFilter(currentRequestFilter);
 
-                    await DisplayAlert("Success", "Request approved and item marked as confirmed!", "OK");
+                    await DisplayAlert("Success",
+                        $"Request approved! Student has been notified with collection instructions.",
+                        "OK");
                 }
             }
-
+        }
         private async void OnRejectRequestClicked(object sender, EventArgs e)
         {
             var button = sender as Button;

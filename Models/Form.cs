@@ -1,6 +1,5 @@
 ﻿namespace MauiApp3
 {
-
     public class Form
     {
         public int formId { get; set; }
@@ -9,5 +8,6 @@
         public string itemName { get; set; }
         public string Notes { get; set; }
         public string Status { get; set; }
+        public string CollectionInstructions { get; set; } 
     }
 }
