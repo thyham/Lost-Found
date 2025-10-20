@@ -4,7 +4,7 @@ This is the Lost and Found mobile application developed by Roy Jacob (14258394),
 
 The instructions below provide information on how to setup and operate the application:
 
-1. Download and extract the ZIP folder provided directly by the developer, or fork the repository link below directly into Visual Studio:
+- Download and extract the ZIP folder provided directly by the developer, or fork the repository link below directly into Visual Studio:
 https://github.com/thyham/Lost-Found.git
 
 There are two methods of running the application:
