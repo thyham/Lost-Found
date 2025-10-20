@@ -27,7 +27,7 @@ Student
   Password: demo123
 
 Staff
-- Username: demo
-  Password: demo123
+- Username: staff
+  Password: staff123
 
 Login into any of these accounts to utilise the application's features.
