@@ -24,7 +24,7 @@ Administrator
 
 Student
 - Username: student
-  Password: password
+  Password: student123
 
 Staff
 - Username: demo
