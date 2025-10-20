@@ -23,8 +23,8 @@ Administrator
   Password: admin123
 
 Student
-- Username: student
-  Password: student123
+- Username: demo
+  Password: demo123
 
 Staff
 - Username: demo
