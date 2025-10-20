@@ -19,15 +19,15 @@ There are two methods of running the application:
 There are three default users that can be logged into:
 
 Administrator
-Username: admin
-Password: admin123
+- Username: admin
+  Password: admin123
 
 Student
-Username: student
-Password: password
+- Username: student
+  Password: password
 
 Staff
-Username: demo
-Password: demo123
+- Username: demo
+  Password: demo123
 
 Login into any of these accounts to utilise the application's features.
