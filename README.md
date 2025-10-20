@@ -7,9 +7,9 @@ The instructions below provide information on how to setup and operate the appli
 - Download and extract the ZIP folder provided directly by the developer, or fork the repository link below directly into Visual Studio:
 https://github.com/thyham/Lost-Found.git
 
-There are two methods of running the application:
+There are two main methods of running the application:
 1. Build and deploy with the default Windows Machine.
-   - This option is recommended if the intention is to simply utilise the application's features.
+   - This option is recommended if the intention is to simply utilise the application's functionality.
    
 2. Build and deploy with the Android Emulator.
    - This option is recommended to fully utilise the application's GUI.
