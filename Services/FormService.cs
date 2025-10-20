@@ -3,17 +3,30 @@ using System.Linq;
 
 namespace MauiApp3
 {
-    public static class FormService
+    // Implements IDataService<Form> interface for managing Form entities
+    public class FormService : IDataService<Form>
     {
-        private static List<Form> forms = new List<Form>();
-        private static readonly string formsFilePath = Path.Combine(FileSystem.AppDataDirectory, "forms.txt");
+        private List<Form> forms = new List<Form>();
+        private readonly string formsFilePath = Path.Combine(FileSystem.AppDataDirectory, "forms.txt");
 
-        static FormService()
+        // Singleton pattern for global access
+        private static FormService _instance;
+        public static FormService Instance
+        {
+            get
+            {
+                if (_instance == null)
+                    _instance = new FormService();
+                return _instance;
+            }
+        }
+
+        private FormService()
         {
             LoadFormsFromFile();
         }
 
-        private static void LoadFormsFromFile()
+        private void LoadFormsFromFile()
         {
             try
             {
@@ -40,10 +53,10 @@ namespace MauiApp3
                                 itemName = parts[3],
                                 Notes = parts[4],
                                 Status = parts.Length > 5 ? parts[5] : "Pending",
-                                CollectionInstructions = parts.Length > 6 ? parts[6] : "" 
+                                CollectionInstructions = parts.Length > 6 ? parts[6] : ""
                             };
                             forms.Add(form);
-                            System.Diagnostics.Debug.WriteLine($"[FormService] Loaded form: {form.formId}, Item: {form.itemName}, Status: {form.Status}");
+                            System.Diagnostics.Debug.WriteLine($"[FormService] Loaded form: {form.formId}, Item: {form.itemName}");
                         }
                     }
                 }
@@ -58,7 +71,7 @@ namespace MauiApp3
             }
         }
 
-        private static void SaveFormsToFile()
+        private void SaveFormsToFile()
         {
             try
             {
@@ -73,12 +86,18 @@ namespace MauiApp3
             }
         }
 
-        public static List<Form> GetForms()
+        // IDataService<Form> interface implementation
+        public List<Form> GetAll()
         {
             return new List<Form>(forms);
         }
 
-        public static void AddForm(Form form)
+        public Form GetById(int id)
+        {
+            return forms.FirstOrDefault(f => f.formId == id);
+        }
+
+        public void Add(Form form)
         {
             form.formId = forms.Count > 0 ? forms.Max(f => f.formId) + 1 : 1;
             forms.Add(form);
@@ -86,7 +105,7 @@ namespace MauiApp3
             System.Diagnostics.Debug.WriteLine($"[FormService] Added new form: {form.formId}, Item: {form.itemName}");
         }
 
-        public static void UpdateForm(Form form)
+        public void Update(Form form)
         {
             var existingForm = forms.FirstOrDefault(f => f.formId == form.formId);
             if (existingForm != null)
@@ -99,20 +118,24 @@ namespace MauiApp3
             }
         }
 
-        public static void DeleteForm(int formId)
+        public void Delete(int id)
         {
-            var form = forms.FirstOrDefault(f => f.formId == formId);
+            var form = forms.FirstOrDefault(f => f.formId == id);
             if (form != null)
             {
                 forms.Remove(form);
                 SaveFormsToFile();
-                System.Diagnostics.Debug.WriteLine($"[FormService] Deleted form: {formId}");
+                System.Diagnostics.Debug.WriteLine($"[FormService] Deleted form: {id}");
             }
         }
 
-        public static Form GetForm(int formId)
-        {
-            return forms.FirstOrDefault(f => f.formId == formId);
-        }
+        // Static wrapper methods for backward compatibility
+        // These allow existing code throughout the app to continue using the old method names
+        // without needing to change code throughout the app as we implemented the interfaces later
+        public static List<Form> GetForms() => Instance.GetAll();
+        public static Form GetForm(int formId) => Instance.GetById(formId);
+        public static void AddForm(Form form) => Instance.Add(form);
+        public static void UpdateForm(Form form) => Instance.Update(form);
+        public static void DeleteForm(int formId) => Instance.Delete(formId);
     }
 }

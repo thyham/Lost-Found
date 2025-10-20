@@ -3,17 +3,30 @@ using System.Linq;
 
 namespace MauiApp3
 {
-    public static class ItemService
+    // Implements IDataService<Item> interface for managing Item entities
+    public class ItemService : IDataService<Item>
     {
-        private static List<Item> items = new List<Item>();
-        private static readonly string itemsFilePath = Path.Combine(FileSystem.AppDataDirectory, "items.txt");
+        private List<Item> items = new List<Item>();
+        private readonly string itemsFilePath = Path.Combine(FileSystem.AppDataDirectory, "items.txt");
 
-        static ItemService()
+        // Singleton pattern for global access
+        private static ItemService _instance;
+        public static ItemService Instance
+        {
+            get
+            {
+                if (_instance == null)
+                    _instance = new ItemService();
+                return _instance;
+            }
+        }
+
+        private ItemService()
         {
             LoadItemsFromFile();
         }
 
-        private static void LoadItemsFromFile()
+        private void LoadItemsFromFile()
         {
             try
             {
@@ -44,17 +57,17 @@ namespace MauiApp3
                                 ImagePath = parts.Length > 7 ? parts[7] : null
                             };
                             items.Add(item);
-                            System.Diagnostics.Debug.WriteLine($"[ItemService] Loaded item: {item.Id}, Name: {item.Name}, Image: {item.ImagePath}");
+                            System.Diagnostics.Debug.WriteLine($"[ItemService] Loaded item: {item.Id}, Name: {item.Name}");
                         }
                     }
                 }
                 else
                 {
                     System.Diagnostics.Debug.WriteLine("[ItemService] No existing items file found. Creating default items...");
-                    items.Add(new Item { Id = 1, Name = "IPhone Charger", Category = "Technology", Date = "08/12/2025", Location = "Building 11.5.204", Notes = "It is an iphone 16 charger", Status = "Pending", ImagePath = null });
-                    items.Add(new Item { Id = 2, Name = "Black Jacket", Category = "Clothing", Date = "08/12/2025", Location = "Building 11.5.204", Notes = "It is a puffer jacket", Status = "Confirmed", ImagePath = null });
-                    items.Add(new Item { Id = 3, Name = "Blue Jacket", Category = "Clothing", Date = "08/12/2025", Location = "Building 11.5.204", Notes = "It is a tommy hilfiger jacket", Status = "Pending", ImagePath = null });
-                    items.Add(new Item { Id = 4, Name = "Samsung Charger", Category = "Technology", Date = "08/12/2025", Location = "Building 11.5.204", Notes = "It is a samsung 21fe charger", Status = "Pending", ImagePath = null });
+                    items.Add(new Item { Id = 1, Name = "IPhone Charger", Category = "Technology", Date = "08/12/2025", Location = "Building 11.5.204", Notes = "It is an iphone 16 charger", Status = "Pending" });
+                    items.Add(new Item { Id = 2, Name = "Black Jacket", Category = "Clothing", Date = "08/12/2025", Location = "Building 11.5.204", Notes = "It is a puffer jacket", Status = "Confirmed" });
+                    items.Add(new Item { Id = 3, Name = "Blue Jacket", Category = "Clothing", Date = "08/12/2025", Location = "Building 11.5.204", Notes = "It is a tommy hilfiger jacket", Status = "Pending" });
+                    items.Add(new Item { Id = 4, Name = "Samsung Charger", Category = "Technology", Date = "08/12/2025", Location = "Building 11.5.204", Notes = "It is a samsung 21fe charger", Status = "Pending" });
                     SaveItemsToFile();
                 }
             }
@@ -64,7 +77,7 @@ namespace MauiApp3
             }
         }
 
-        private static void SaveItemsToFile()
+        private void SaveItemsToFile()
         {
             try
             {
@@ -79,20 +92,26 @@ namespace MauiApp3
             }
         }
 
-        public static List<Item> GetItems()
+        // IDataService<Item> interface implementation
+        public List<Item> GetAll()
         {
             return new List<Item>(items);
         }
 
-        public static void AddItem(Item item)
+        public Item GetById(int id)
+        {
+            return items.FirstOrDefault(i => i.Id == id);
+        }
+
+        public void Add(Item item)
         {
             item.Id = items.Count > 0 ? items.Max(i => i.Id) + 1 : 1;
             items.Add(item);
             SaveItemsToFile();
-            System.Diagnostics.Debug.WriteLine($"[ItemService] Added new item: {item.Id}, Name: {item.Name}, Image: {item.ImagePath}");
+            System.Diagnostics.Debug.WriteLine($"[ItemService] Added new item: {item.Id}, Name: {item.Name}");
         }
 
-        public static void UpdateItem(Item item)
+        public void Update(Item item)
         {
             var existingItem = items.FirstOrDefault(i => i.Id == item.Id);
             if (existingItem != null)
@@ -109,12 +128,12 @@ namespace MauiApp3
             }
         }
 
-        public static void DeleteItem(int itemId)
+        public void Delete(int id)
         {
-            var item = items.FirstOrDefault(i => i.Id == itemId);
+            var item = items.FirstOrDefault(i => i.Id == id);
             if (item != null)
             {
-              
+                // Delete associated image file if exists
                 if (!string.IsNullOrEmpty(item.ImagePath) && File.Exists(item.ImagePath))
                 {
                     try
@@ -130,13 +149,17 @@ namespace MauiApp3
 
                 items.Remove(item);
                 SaveItemsToFile();
-                System.Diagnostics.Debug.WriteLine($"[ItemService] Deleted item: {itemId}");
+                System.Diagnostics.Debug.WriteLine($"[ItemService] Deleted item: {id}");
             }
         }
 
-        public static Item GetItem(int itemId)
-        {
-            return items.FirstOrDefault(i => i.Id == itemId);
-        }
+        // Static wrapper methods for backward compatibility
+        // These allow existing code throughout the app to continue using the old method names
+        // without needing to change code throughout the app as we implemented the interfaces later
+        public static List<Item> GetItems() => Instance.GetAll();
+        public static Item GetItem(int itemId) => Instance.GetById(itemId);
+        public static void AddItem(Item item) => Instance.Add(item);
+        public static void UpdateItem(Item item) => Instance.Update(item);
+        public static void DeleteItem(int itemId) => Instance.Delete(itemId);
     }
 }
